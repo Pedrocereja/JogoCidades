@@ -16,7 +16,7 @@ end
 function Torta:draw()
     love.graphics.circle("fill", self.x, self.y, self.r)
 	love.graphics.line(self.x, self.y, self.xorigin, self.yorigin)
-	love.graphics.setColor(255,0,0)
+	love.graphics.setColor(0,0,255)
 	for i,v in ipairs(self.habitantes) do
 		love.graphics.circle("fill", self.x-self.r+v.r+12*(i-1), self.y+self.r-v.r, v.r)
 	end
