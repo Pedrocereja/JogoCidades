@@ -1,18 +1,26 @@
 function love.load()
     Object = require "libs.classic"
-    require "torta"
-    require "colisao"
-    require "populacao"
-    require "gerenciadorMundo"
+    require "classes/populacao"
+    require "classes/torta"
+    require "handlers/colisao"
+    require "handlers/gerenciadorMundo"
+    --require "mapa"
 
 	onMouse = 0 --objeto seguindo o mouse
 
     local width, height = love.graphics.getDimensions()
     local torta = Torta(width/2, height/2)
+    local pessoa = Populacao(torta)
+    local pessoa1 = Populacao(torta)
+    local pessoa2 = Populacao(torta)
+    insMundo(pessoa, "noFis")
+    insMundo(pessoa1, "noFis")
+    insMundo(pessoa2, "noFis")
     insMundo(torta, "fisTorta")
 end
 
 function love.draw()
+	--draw_map()
     for i,v in ipairs(draws) do
     	--print(i,v)
         v:draw()
@@ -55,4 +63,8 @@ function love.mousepressed(x, y, button)
 			onMouse = 0
 		end
 	end
+end
+
+function love.keypressed(key)
+	mapScroll(key)
 end
