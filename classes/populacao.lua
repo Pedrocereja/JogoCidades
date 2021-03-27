@@ -14,11 +14,12 @@ function Populacao:draw()
 end
 
 function Populacao:update()
+	--Entra na cidade-casa quando colidir com ela
 	local aux = tortaCollision(self.x, self.y, self.r)
 	if aux==self.home then
 		table.insert(aux.habitantes, self)
 		rmMundo(self)
-	else self:moveto(self.home)
+	else self:moveto(self.home) --se não estiver na cidade-casa, vai para ela
 	end
 end
 
