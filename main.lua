@@ -2,6 +2,7 @@ function love.load()
     Object = require "libs.classic"
     require "classes/populacao"
     require "classes/torta"
+    require "classes/mostrador"
     require "handlers/gerenciadorMundo"
     --require "mapa"
 
@@ -26,9 +27,9 @@ function love.draw()
     end
 end
 
-function love.update()
+function love.update(dt)
 	for i,v in ipairs(updates) do
-		v:update()
+		v:update(dt)
 	end
 end
 
@@ -73,4 +74,11 @@ end
 
 function love.keypressed(key)
 	mapScroll(key)
+end
+
+function love.mousemoved(x, y)
+	for i,v in ipairs(tortas) do
+		v:showInfo(x, y)
+	end
+	--print("Done")
 end

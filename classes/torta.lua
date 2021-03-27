@@ -9,7 +9,7 @@ function Torta:new(x, y, r)
 	self.habitantes = {}
 end
 
-function Torta:update()
+function Torta:update(dt)
 	self.x, self.y = love.mouse.getPosition()
 end
 
@@ -21,4 +21,13 @@ function Torta:draw()
 		love.graphics.circle("fill", self.x-self.r+v.r+12*(i-1), self.y+self.r-v.r, v.r)
 	end
 	love.graphics.setColor(255,255,255)
+end
+
+function Torta:showInfo(x, y)
+	local torta = Torta(x, y, 1)
+	if CheckCollision(self, torta) and self.mostrador==nil then
+		--self.mostrador = "Não há recursos"
+		--print("Não há recursos")
+		--elseif then
+	end
 end

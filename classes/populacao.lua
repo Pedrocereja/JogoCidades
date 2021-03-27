@@ -23,10 +23,10 @@ function Populacao:update()
 	end
 end
 
-function Populacao:moveto(destino)
+function Populacao:moveto(destino, dt)
 	local dx = destino.x-self.x
 	local dy = destino.y-self.y
 	local magnitude = math.sqrt(dx^2+dy^2)
-	self.x = self.x + self.velocidade*dx/magnitude 
-	self.y = self.y + self.velocidade*dy/magnitude
+	self.x = self.x + self.velocidade*dx/magnitude*dt
+	self.y = self.y + self.velocidade*dy/magnitude*dt
 end
