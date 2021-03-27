@@ -13,10 +13,10 @@ function love.load()
     local pessoa = Populacao(torta)
     local pessoa1 = Populacao(torta)
     local pessoa2 = Populacao(torta)
-    insMundo(pessoa, "noFis")
-    insMundo(pessoa1, "noFis")
-    insMundo(pessoa2, "noFis")
-    insMundo(torta, "fisTorta")
+    insMundo(pessoa, "UI")
+    insMundo(pessoa1, "UI")
+    insMundo(pessoa2, "UI")
+    insMundo(torta, "torta")
 end
 
 function love.draw()
@@ -27,6 +27,7 @@ function love.draw()
 end
 
 function love.update()
+	print(onMouse)
 	for i,v in ipairs(updates) do
 		v:update()
 	end
@@ -39,22 +40,26 @@ function love.mousepressed(x, y, button)
 			local aux = tortaCollision(x, y)
 			if aux then
 				local torta = Torta(aux.x, aux.y)
-				insMundo(torta, "noFis")
+				insMundo(torta, "UI")
 				onMouse = torta
 			end
-		else
+		elseif onMouse ~= 0 then
 			local aux = tortaCollision(x, y, onMouse.r)
-			if not aux then
+			local aux1 = tortaCollision(x,y)
+			if not aux then --se contrução não colide
 				rmMundo(onMouse)
-				insMundo(onMouse, "fisTorta")
+				insMundo(onMouse, "torta")
 		   		local pessoa = Populacao(onMouse)
-		   		insMundo(pessoa, "noFis")
+		   		insMundo(pessoa, "UI")
 				onMouse = 0
-			elseif (aux.x==onMouse.xorigin)and(aux.y==onMouse.yorigin) then
+			elseif (aux1)and(aux1.x==onMouse.xorigin)and(aux1.y==onMouse.yorigin) then --se construção colide com sua base reduz tamanho
 				onMouse.r = onMouse.r-10
 				if onMouse.r < 10 then onMouse.r = 50 end
-			else
-				onMouse.xorigin, onMouse.yorigin, onMouse.r = aux.x, aux.y, 50
+			elseif (aux1) then --se construção colide com não base "rebaseia"
+				if (aux1.x~=onMouse.xorigin)or(aux1.y~=onMouse.yorigin) then
+					onMouse.xorigin, onMouse.yorigin, onMouse.r = aux1.x, aux1.y, 50
+				end
+			elseif not aux then --blink() --TODO construção piscar em vermelho quando suas borda colidem mas o mouse não
 			end
 	   	end
 	elseif button ==2 then

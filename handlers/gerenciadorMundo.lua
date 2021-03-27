@@ -1,19 +1,24 @@
---Essa livraria mantém registro dos objetos existentes no mundo, desenhando-os e movendo-os como necessário.
+--Essa biblioteca mantém registro dos objetos existentes no mundo, desenhando-os e movendo-os como necessário.
 --Além disso, age como detector de colisões básicos para contornos retangulares,
 --mas não os resolve.
 
 updates = {} --lista de objetos com propriedade ".update"
 draws = {} --lista de objetos com propriedade ".draw"
-colisorTortas = {} --objetos a serem checados em colisões
-pessoas = {} --pessoas em transito nas tortas
+tortas = {}
+pessoas = {} --pessoas em transito
 terreno = {}
 
 function insMundo(Obj, layer)
-	--Cria o objeto no mundo do jogo, em uma das seguintes layers: "fisTorta", "fisPessoas" "noFis"
-	if (layer=="fisTorta") then
-	    table.insert(colisorTortas, Obj)
+	--Cria o objeto no mundo do jogo, em uma das seguintes layers: "torta", "pessoa" "UI"
+	if (layer=="torta") then
+	    table.insert(tortas, Obj)
 	    table.insert(draws, Obj)
-		Obj.icolisorTortas = #colisorTortas --as 'i-variaveis' mantém no objeto o registro de sua posição nas tabelas do mundo
+		Obj.itortas = #tortas --as 'i-variaveis' mantém no objeto o registro de sua posição nas tabelas do mundo
+		Obj.idraws = #draws
+	elseif (layer=="UI") then
+		table.insert(updates, Obj)
+	    table.insert(draws, Obj)
+		Obj.iupdates = #updates
 		Obj.idraws = #draws
 	elseif (layer=="noFis") then
 		table.insert(updates, Obj)
@@ -40,12 +45,12 @@ function rmMundo(Obj)
 		end
 		Obj.iupdates = nil
 	end
-	if (Obj.icolisorTortas~=nil) then
-		table.remove(colisorTortas, Obj.icolisorTortas)
-		for i=Obj.icolisorTortas,#colisorTortas do
-			colisorTortas[i].icolisorTortas=colisorTortas[i].icolisorTortas-1
+	if (Obj.itortas~=nil) then
+		table.remove(tortas, Obj.itortas)
+		for i=Obj.itortas,#tortas do
+			tortas[i].itortas=tortas[i].itortas-1
 		end
-		Obj.icolisorTortas = nil
+		Obj.itortas = nil
 	end
 end
 
@@ -65,8 +70,8 @@ function tortaCollision(x, y, r)
 	--Retorna a torta que foi colidida ou falso;
 	r = r or 1
 	local Obj2 = Torta(x, y, r)
-	for i=1,#colisorTortas do
-    	if CheckCollision(colisorTortas[i], Obj2) then
-    		return colisorTortas[i] end
+	for i=1,#tortas do
+    	if CheckCollision(tortas[i], Obj2) then
+    		return tortas[i] end
         end
 return false end
