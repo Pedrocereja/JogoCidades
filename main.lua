@@ -2,7 +2,6 @@ function love.load()
     Object = require "libs.classic"
     require "classes/populacao"
     require "classes/torta"
-    require "handlers/colisao"
     require "handlers/gerenciadorMundo"
     --require "mapa"
 
@@ -36,14 +35,14 @@ end
 function love.mousepressed(x, y, button)
 	if button == 1 then
 		if onMouse == 0 then
-			local aux = checkCollisions(x, y)
+			local aux = tortaCollision(x, y)
 			if aux then
 				local torta = Torta(aux.x, aux.y)
 				insMundo(torta, "noFis")
 				onMouse = torta
 			end
 		else
-			local aux = checkCollisions(x, y, onMouse.r)
+			local aux = tortaCollision(x, y, onMouse.r)
 			if not aux then
 				rmMundo(onMouse)
 				insMundo(onMouse, "fisTorta")

@@ -14,7 +14,7 @@ function Populacao:draw()
 end
 
 function Populacao:update()
-	local aux = checkCollisions(self.x, self.y, self.r)
+	local aux = tortaCollision(self.x, self.y, self.r)
 	if aux==self.home then
 		table.insert(aux.habitantes, self)
 		rmMundo(self)
