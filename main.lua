@@ -27,7 +27,6 @@ function love.draw()
 end
 
 function love.update()
-	print(onMouse)
 	for i,v in ipairs(updates) do
 		v:update()
 	end
@@ -59,7 +58,8 @@ function love.mousepressed(x, y, button)
 				if (aux1.x~=onMouse.xorigin)or(aux1.y~=onMouse.yorigin) then
 					onMouse.xorigin, onMouse.yorigin, onMouse.r = aux1.x, aux1.y, 50
 				end
-			elseif not aux then --blink() --TODO construção piscar em vermelho quando suas borda colidem mas o mouse não
+			elseif not aux1 then --blink()
+				print("TODO construção piscar em vermelho quando suas bordas colidem mas o mouse não")
 			end
 	   	end
 	elseif button ==2 then
