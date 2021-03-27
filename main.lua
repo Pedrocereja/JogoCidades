@@ -7,6 +7,7 @@ function love.load()
 
 	onMouse = 0 --objeto seguindo o mouse
 
+    --desenha uma torta inicial no meio da tela e a popula com 3 habitantes
     local width, height = love.graphics.getDimensions()
     local torta = Torta(width/2, height/2)
     local pessoa = Populacao(torta)
@@ -21,7 +22,6 @@ end
 function love.draw()
 	--draw_map()
     for i,v in ipairs(draws) do
-    	--print(i,v)
         v:draw()
     end
 end
@@ -34,6 +34,7 @@ end
 
 function love.mousepressed(x, y, button)
 	if button == 1 then
+		--se clicar em uma torta, você pode posicionar uma torta nova
 		if onMouse == 0 then
 			local aux = tortaCollision(x, y)
 			if aux then
@@ -57,6 +58,7 @@ function love.mousepressed(x, y, button)
 			end
 	   	end
 	elseif button ==2 then
+		--limpa construção no mouse
 		if onMouse ~= 0 then
 	   		rmMundo(onMouse)
 			onMouse = 0
