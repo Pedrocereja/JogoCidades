@@ -4,7 +4,7 @@ function love.load()
     require "classes/torta"
     require "classes/mostrador"
     require "handlers/gerenciadorMundo"
-    --require "mapa"
+    require "mapa"
 
 	onMouse = 0 --objeto seguindo o mouse
 
@@ -21,13 +21,14 @@ function love.load()
 end
 
 function love.draw()
-	--draw_map()
+	draw_map()
     for i,v in ipairs(draws) do
         v:draw()
     end
 end
 
 function love.update(dt)
+	mapupdate(dt)
 	for i,v in ipairs(updates) do
 		v:update(dt)
 	end
@@ -72,9 +73,9 @@ function love.mousepressed(x, y, button)
 	end
 end
 
-function love.keypressed(key)
-	mapScroll(key)
-end
+--function love.keypressed(key)
+	--mapScroll(key)
+--end
 
 function love.mousemoved(x, y)
 	for i,v in ipairs(tortas) do
