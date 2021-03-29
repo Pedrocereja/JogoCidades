@@ -4,8 +4,6 @@
       tile[i] = love.graphics.newImage( "images/tile"..i..".png" )
    end
    
-   love.graphics.setNewFont(12)
-   
    -- map variables
    map_w = 20
    map_h = 20
