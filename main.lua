@@ -5,8 +5,12 @@ function love.load()
     require "classes/mostrador"
     require "handlers/gerenciadorMundo"
     require "mapa"
+    --Camera = require "Camera"
 
 	onMouse = 0 --objeto seguindo o mouse
+	--camera = Camera()
+    --camera:setFollowStyle('TOPDOWN')
+    --playerView = Torta(width/2, height/2)
 
     --desenha uma torta inicial no meio da tela e a popula com 3 habitantes
     local width, height = love.graphics.getDimensions()
@@ -21,14 +25,19 @@ function love.load()
 end
 
 function love.draw()
+	--camera:attach()
 	draw_map()
     for i,v in ipairs(draws) do
         v:draw()
     end
+    --camera:detach()
 end
 
 function love.update(dt)
-	mapupdate(dt)
+	--mapupdate(dt)
+	--camera:update(dt)
+	--camera:follow(x, y)
+
 	for i,v in ipairs(updates) do
 		v:update(dt)
 	end
