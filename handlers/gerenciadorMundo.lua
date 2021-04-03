@@ -5,8 +5,9 @@
 updates = {} --lista de objetos com propriedade ".update"
 draws = {} --lista de objetos com propriedade ".draw"
 tortas = {}
-pessoas = {} --pessoas em transito
-terreno = {}
+caminhos = {}
+--terreno = {}
+--arestas = {} -- guarda a informação de quais tortas estão ligadas entre sí
 
 function insMundo(Obj, layer)
 	--Cria o objeto no mundo do jogo, em uma das seguintes layers: "torta", "pessoa" "UI"
@@ -24,6 +25,11 @@ function insMundo(Obj, layer)
 		table.insert(updates, Obj)
 	    table.insert(draws, Obj)
 		Obj.iupdates = #updates
+		Obj.idraws = #draws
+	elseif (layer=="path") then
+		table.insert(caminhos, Obj)
+	    table.insert(draws, Obj)
+		Obj.icaminhos = #updates
 		Obj.idraws = #draws
 	else print("Erro na função insMundo: layer não existente")
 	end
@@ -52,6 +58,13 @@ function rmMundo(Obj)
 		end
 		Obj.itortas = nil
 	end
+	if (Obj.icaminhos~=nil) then
+		table.remove(tortas, Obj.icaminhos)
+		for i=Obj.icaminhos,#tortas do
+			caminhos[i].icaminhos=caminhos[i].icaminhos-1
+		end
+		Obj.icaminhos = nil
+	end
 end
 
 function CheckCollision(obj1, obj2)
@@ -68,7 +81,7 @@ end
 function tortaCollision(x, y, r)
 	--Checa se o quadrado nas coordenadas (x,y) e "raio" r colide com alguma torta;
 	--Retorna a torta que foi colidida ou falso;
-	r = r or 1
+	local r = r or 1
 	local Obj2 = Torta(x, y, r)
 	for i=1,#tortas do
     	if CheckCollision(tortas[i], Obj2) then

@@ -3,6 +3,7 @@ function love.load()
     require "classes/populacao"
     require "classes/torta"
     require "classes/mostrador"
+    require "classes/caminho"
     require "handlers/gerenciadorMundo"
     require "mapa"
     Camera = require "Camera"
@@ -51,13 +52,19 @@ function love.mousepressed(x, y, button)
 			local aux = tortaCollision(x, y)
 			if aux then
 				local torta = Torta(aux.x, aux.y)
+				local caminho = Caminho(aux.x, aux.y, torta.x, torta.y)
 				insMundo(torta, "UI")
+				insMundo(caminho, "UI")
+				torta.caminho = caminho
 				onMouse = torta
 			end
 		elseif onMouse ~= 0 then
 			local aux = tortaCollision(x, y, onMouse.r)
 			local aux1 = tortaCollision(x,y)
 			if not aux then --se contrução não colide
+				rmMundo(onMouse.caminho)
+				insMundo(onMouse.caminho, "path")
+				onMouse.caminho = nil
 				rmMundo(onMouse)
 				insMundo(onMouse, "torta")
 		   		local pessoa = Populacao(onMouse)
