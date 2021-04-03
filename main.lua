@@ -5,12 +5,11 @@ function love.load()
     require "classes/mostrador"
     require "handlers/gerenciadorMundo"
     require "mapa"
-    --Camera = require "Camera"
+    Camera = require "Camera"
 
 	onMouse = 0 --objeto seguindo o mouse
-	--camera = Camera()
-    --camera:setFollowStyle('TOPDOWN')
-    --playerView = Torta(width/2, height/2)
+	camera = Camera()
+    camera:setFollowLerp(0.2)
 
     --desenha uma torta inicial no meio da tela e a popula com 3 habitantes
     local width, height = love.graphics.getDimensions()
@@ -22,20 +21,22 @@ function love.load()
     insMundo(pessoa1, "UI")
     insMundo(pessoa2, "UI")
     insMundo(torta, "torta")
+    camera:follow(width/2, height/2)
 end
 
 function love.draw()
-	--camera:attach()
+	camera:attach()
 	draw_map()
     for i,v in ipairs(draws) do
         v:draw()
     end
-    --camera:detach()
+    camera:detach()
 end
 
 function love.update(dt)
-	--camera:update(dt)
-	--camera:follow(x, y)
+	camera:update(dt)
+	--camera:follow(x, y) 
+	camera:newmove(dt, 700)
 
 	for i,v in ipairs(updates) do
 		v:update(dt)
@@ -43,6 +44,7 @@ function love.update(dt)
 end
 
 function love.mousepressed(x, y, button)
+	x, y = camera:toWorldCoords(x, y)
 	if button == 1 then
 		--se clicar em uma torta, você pode posicionar uma torta nova
 		if onMouse == 0 then
@@ -85,4 +87,10 @@ function love.mousemoved(x, y)
 	for i,v in ipairs(tortas) do
 		v:showInfo(x, y)
 	end
+end
+
+function love.wheelmoved(x, y)
+	camera.scale = camera.scale + y*.1
+	if camera.scale < .1 then camera.scale = .1 end
+	print(camera.scale)
 end

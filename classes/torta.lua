@@ -10,7 +10,7 @@ function Torta:new(x, y, r)
 end
 
 function Torta:update(dt)
-	self.x, self.y = love.mouse.getPosition()
+	self.x, self.y = camera:getMousePosition()
 end
 
 function Torta:draw()

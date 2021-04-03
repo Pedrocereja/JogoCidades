@@ -320,6 +320,15 @@ function Camera:follow(x, y)
     self.target_x, self.target_y = x, y
 end
 
+local function btn(value)
+  return value and 1 or 0
+end
+
+
+function Camera:newmove(dt, speed)
+    self.target_x, self.target_y = self.target_x+(btn(love.keyboard.isDown("right", 'd'))-btn(love.keyboard.isDown("left", 'a')))*speed*dt, self.target_y+(btn(love.keyboard.isDown("down", 's'))-btn(love.keyboard.isDown("up", 'w')))*speed*dt
+return self.target_x, self.target_y end
+
 function Camera:setDeadzone(x, y, w, h)
     self.deadzone = true
     self.deadzone_x = x
