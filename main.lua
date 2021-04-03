@@ -34,7 +34,6 @@ function love.draw()
 end
 
 function love.update(dt)
-	--mapupdate(dt)
 	--camera:update(dt)
 	--camera:follow(x, y)
 
@@ -82,13 +81,8 @@ function love.mousepressed(x, y, button)
 	end
 end
 
---function love.keypressed(key)
-	--mapScroll(key)
---end
-
 function love.mousemoved(x, y)
 	for i,v in ipairs(tortas) do
 		v:showInfo(x, y)
 	end
-	--print("Done")
 end
