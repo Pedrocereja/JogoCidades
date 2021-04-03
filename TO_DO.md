@@ -1,2 +1,2 @@
 - [] Adjust tile rendering to camera viewport
-- [] Implement Dikstra for minor path
+- [] Implement Dikstra for shortest path
