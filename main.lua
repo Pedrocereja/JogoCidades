@@ -52,7 +52,7 @@ function love.mousepressed(x, y, button)
 			local aux = tortaCollision(x, y)
 			if aux then
 				local torta = Torta(aux.x, aux.y)
-				local caminho = Caminho(aux.x, aux.y, torta.x, torta.y)
+				local caminho = Caminho(aux, torta)
 				insMundo(torta, "UI")
 				insMundo(caminho, "UI")
 				torta.caminho = caminho

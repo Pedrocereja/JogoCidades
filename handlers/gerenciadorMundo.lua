@@ -7,7 +7,6 @@ draws = {} --lista de objetos com propriedade ".draw"
 tortas = {}
 caminhos = {}
 --terreno = {}
---arestas = {} -- guarda a informação de quais tortas estão ligadas entre sí
 
 function insMundo(Obj, layer)
 	--Cria o objeto no mundo do jogo, em uma das seguintes layers: "torta", "pessoa" "UI"

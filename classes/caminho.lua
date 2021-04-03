@@ -1,17 +1,15 @@
 Caminho = Object:extend()
 
-function Caminho:new(xo, yo, xf, yf)
-    self.xo = xo
-    self.yo = yo
-	self.xf = xf
-	self.yf = yf
-	self.habitantes = {}
+function Caminho:new(T1, T2)
+    self.T1 = T1
+    self.T2 = T2
+	--self.habitantes = {}
 end
 
 function Caminho:draw()
-	love.graphics.line(self.xo, self.yo, self.xf, self.yf)
+	love.graphics.line(self.T1.x, self.T1.y, self.T2.x, self.T2.y)
 end
 
 function Caminho:update(dt)
-	self.xf, self.yf = camera:getMousePosition()
+	--nothing
 end
