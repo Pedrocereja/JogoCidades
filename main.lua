@@ -1,11 +1,12 @@
 function love.load()
     Object = require "libs.classic"
-    require "classes/populacao"
-    require "classes/torta"
-    require "classes/mostrador"
-    require "classes/caminho"
-    require "handlers/gerenciadorMundo"
+    require "classes.populacao"
+    require "classes.torta"
+    require "classes.mostrador"
+    require "classes.caminho"
+    require "handlers.gerenciadorMundo"
     require "mapa"
+	require "handlers.menorCaminho"
     Camera = require "Camera"
 
 	onMouse = 0 --objeto seguindo o mouse
@@ -83,6 +84,7 @@ function love.mousepressed(x, y, button)
 	   	end
 	elseif button ==2 then
 		--limpa construção no mouse
+		menorCaminho(torta[2], torta[5])
 		if onMouse ~= 0 then
 	   		rmMundo(onMouse)
 			onMouse = 0

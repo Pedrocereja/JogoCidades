@@ -17,7 +17,7 @@ function menorCaminho(origem, alvo)--, tipo)
 	while #unvisited > 0 do
 		u = table.remove(unvisited, minkey(unvisited))
 		for i, v in pair(vizinhos(u)) do
-			temp = dist[u] + distancia(u,v)
+			temp = dist[u] + distance(u,v)
 			if temp < dist[v] then
 				lastVisited[v] = u
 				dist[v] = temp
