@@ -1,0 +1,11 @@
+{
+    "Lua.diagnostics.globals": [
+        "love",
+        "torta",
+        "unpack",
+        "pair"
+    ],
+    "Lua.diagnostics.disable": [
+        "lowercase-global"
+    ]
+}

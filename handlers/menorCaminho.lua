@@ -1,5 +1,23 @@
-local nvst = table.shallow_copy(tortas) -- nodos não visitados
+local function shallow_copy(t)
+	local t2 = {}
+	for k,v in pairs(t) do
+		t2[k] = v
+	end
+return t2 end
+
+local nvst = shallow_copy(tortas) -- nodos não visitados
 local mpath = {} -- tabela com nodo|peso|ult. visitado
+
+local function minkey(initialtable) --O que essa função deveria fazer?
+	local orderedTable = {}
+	orderedTable = shallow_copy(initialtable)
+	table.sort(orderedTable)
+	local minval = orderedTable[1]
+	local inv={}
+	for k,v in pairs(initialtable) do
+		inv[v]=k
+	end
+return inv[minval] end
 
 function menorCaminho(origem, alvo)--, tipo)
 	-- Encontra o menor caminho entre duas tortas fornecidas
@@ -13,11 +31,14 @@ function menorCaminho(origem, alvo)--, tipo)
 		lastVisited[v] = nil
 		table.insert(unvisited, v)
 	end
+	local dist = {}
 	dist[origem] = 0
 	while #unvisited > 0 do
-		u = table.remove(unvisited, minkey(unvisited))
+		local u = table.remove(unvisited, minkey(unvisited))
+---@diagnostic disable-next-line: undefined-global
 		for i, v in pair(vizinhos(u)) do
-			temp = dist[u] + distance(u,v)
+---@diagnostic disable-next-line: undefined-global
+			local temp = dist[u] + distance(u,v)
 			if temp < dist[v] then
 				lastVisited[v] = u
 				dist[v] = temp
@@ -26,33 +47,16 @@ function menorCaminho(origem, alvo)--, tipo)
 	end
 	
 	-- gera caminho ate B
-	caminho = {}
-	u = alvo
-	if lastVisited[u] ~= nil or u == source then
+	local caminho = {}
+	local u = alvo
+	if lastVisited[u] ~= nil or u == origem then
 		while u ~= nil do
 			table.insert(caminho, u)
 			u = lastVisited[u]
-	
-	return caminho
+		end
+	return caminho end
 end
 
-local function table.shallow_copy(t)
-  local t2 = {}
-  for k,v in pairs(t) do
-    t2[k] = v
-  end
-  return t2
-end
-
-local function minkey(initialtable)
-	local minval = math.min(unpack(initialtable))
-	local inv={}
-	for k,v in pairs(initialtable) do
-	  inv[v]=k
-	end
-	return inv[minval]
-   end
-   
 local function vizinhos(nodo)
 	local  adj = {} --constrói a tabela de nodos adjacentes ao atual
 	for i,v in ipairs(caminhos) do
@@ -62,9 +66,9 @@ local function vizinhos(nodo)
 			table.insert(adj, v.T1)
 		end 
 	end
-end
+return adj end
 
 local function distance(T1, T2)
 	local dist = (T1.x-T2.x)^2+(T1.y-T2.y)^2
 	dist = math.sqrt(dist)
-return dist
+return dist end

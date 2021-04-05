@@ -84,7 +84,7 @@ function love.mousepressed(x, y, button)
 	   	end
 	elseif button ==2 then
 		--limpa construção no mouse
-		menorCaminho(torta[2], torta[5])
+		menorCaminho(tortas[2], tortas[5])
 		if onMouse ~= 0 then
 	   		rmMundo(onMouse)
 			onMouse = 0
