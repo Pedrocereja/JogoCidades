@@ -1,4 +1,10 @@
-
+local function shallow_copy(t)
+	local t2 = {}
+	for k,v in pairs(t) do
+	  t2[k] = v
+	end
+	return t2
+end
 
 local nvst = shallow_copy(tortas) -- nodos não visitados
 local mpath = {} -- tabela com nodo|peso|ult. visitado
@@ -43,14 +49,6 @@ function menorCaminho(origem, alvo)--, tipo)
 		end
 	end
 return caminho end
-
-local function shallow_copy(t)
-  	local t2 = {}
-  	for k,v in pairs(t) do
-    	t2[k] = v
-  	end
-  	return t2
-end
 
 local function next_node(unvisited, distances)
 	local unvisited_distances = {}
