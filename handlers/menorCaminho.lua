@@ -9,47 +9,6 @@ end
 local nvst = shallow_copy(tortas) -- nodos não visitados
 local mpath = {} -- tabela com nodo|peso|ult. visitado
 
-function menorCaminho(origem, alvo)--, tipo)
-	-- Encontra o menor caminho entre duas tortas fornecidas
-
-	local dist = {} --constrói a tabela de nodos adjacentes ao atual
-	local lastVisited = {}
-	local unvisited = {}  -- copy nodes from original table
-	local distUnvisited = {}
-
-	for i,v in ipairs(tortas) do
-		dist[v] = math.huge
-		distUnvisited[v] = math.huge
-		lastVisited[v] = nil
-		table.insert(unvisited, v)
-	end
-	dist[origem] = 0
-	while #unvisited > 0 do
----@diagnostic disable-next-line: undefined-global
-		local u =  next_node(unvisited, dist)
-		table.remove(unvisited, u)
----@diagnostic disable-next-line: undefined-global
-		for i, v in pair(vizinhos(u)) do
----@diagnostic disable-next-line: undefined-global
-			local temp = dist[u] + distance(u,v)
-			if temp < dist[v] then
-				lastVisited[v] = u
-				dist[v] = temp
-			end
-		end
-	end
-	
-	-- gera caminho ate B
-	local caminho = {}
-	local u = alvo
-	if lastVisited[u] ~= nil or u == origem then
-		while u ~= nil do
-			table.insert(caminho, u)
-			u = lastVisited[u]
-		end
-	end
-return caminho end
-
 local function next_node(unvisited, distances)
 	local unvisited_distances = {}
 	for i,k in pairs(unvisited) do
@@ -77,3 +36,41 @@ local function distance(T1, T2)
 	local dist = (T1.x-T2.x)^2+(T1.y-T2.y)^2
 	dist = math.sqrt(dist)
 return dist end
+
+function menorCaminho(origem, alvo)--, tipo)
+	-- Encontra o menor caminho entre duas tortas fornecidas
+
+	local dist = {} --constrói a tabela de nodos adjacentes ao atual
+	local lastVisited = {}
+	local unvisited = {}  -- copy nodes from original table
+	local distUnvisited = {}
+
+	for i,v in ipairs(tortas) do
+		dist[v] = math.huge
+		distUnvisited[v] = math.huge
+		lastVisited[v] = nil
+		table.insert(unvisited, v)
+	end
+	dist[origem] = 0
+	while #unvisited > 0 do
+		local u = next_node(unvisited, dist)
+		table.remove(unvisited, u)
+		for i, v in pairs(vizinhos(u)) do
+			local temp = dist[u] + distance(u,v)
+			if temp < dist[v] then
+				lastVisited[v] = u
+				dist[v] = temp
+			end
+		end
+	end
+	
+	-- gera caminho ate B
+	local caminho = {}
+	local u = alvo
+	if lastVisited[u] ~= nil or u == origem then
+		while u ~= nil do
+			table.insert(caminho, u)
+			u = lastVisited[u]
+		end
+	end
+return caminho end

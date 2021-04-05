@@ -84,7 +84,10 @@ function love.mousepressed(x, y, button)
 	   	end
 	elseif button ==2 then
 		--limpa construção no mouse
-		menorCaminho(tortas[2], tortas[5])
+		local aux = menorCaminho(tortas[1], tortas[3])
+		for index, value in ipairs(aux) do
+			print(index, value)
+		end
 		if onMouse ~= 0 then
 	   		rmMundo(onMouse)
 			onMouse = 0
