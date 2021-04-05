@@ -1,23 +1,5 @@
-local function shallow_copy(t)
-	local t2 = {}
-	for k,v in pairs(t) do
-		t2[k] = v
-	end
-return t2 end
-
-local nvst = shallow_copy(tortas) -- nodos não visitados
+local nvst = table.shallow_copy(tortas) -- nodos não visitados
 local mpath = {} -- tabela com nodo|peso|ult. visitado
-
-local function minkey(initialtable) --O que essa função deveria fazer?
-	local orderedTable = {}
-	orderedTable = shallow_copy(initialtable)
-	table.sort(orderedTable)
-	local minval = orderedTable[1]
-	local inv={}
-	for k,v in pairs(initialtable) do
-		inv[v]=k
-	end
-return inv[minval] end
 
 function menorCaminho(origem, alvo)--, tipo)
 	-- Encontra o menor caminho entre duas tortas fornecidas
@@ -31,13 +13,11 @@ function menorCaminho(origem, alvo)--, tipo)
 		lastVisited[v] = nil
 		table.insert(unvisited, v)
 	end
-	local dist = {}
 	dist[origem] = 0
 	while #unvisited > 0 do
-		local u = table.remove(unvisited, minkey(unvisited))
----@diagnostic disable-next-line: undefined-global
+		local u =  nextnode(unvisited, dist)
+		table.remove(unvisited, u)
 		for i, v in pair(vizinhos(u)) do
----@diagnostic disable-next-line: undefined-global
 			local temp = dist[u] + distance(u,v)
 			if temp < dist[v] then
 				lastVisited[v] = u
@@ -52,11 +32,30 @@ function menorCaminho(origem, alvo)--, tipo)
 	if lastVisited[u] ~= nil or u == origem then
 		while u ~= nil do
 			table.insert(caminho, u)
-			u = lastVisited[u]
-		end
-	return caminho end
+			u = lastVisited[u]	
+	return caminho
 end
 
+local function table.shallow_copy(t)
+  	local t2 = {}
+  	for k,v in pairs(t) do
+    	t2[k] = v
+  	end
+  	return t2
+end
+
+local function next_node(unvisited, distances)
+	local unvisited_distances = {}
+	for i,k in pairs(unvisited) do
+		unvisited_distances[k] = distances[k]
+	local minval = math.min(unpack(unvisited_distances))
+	local inv={}
+	for k,v in pairs(unvisited_distances) do
+	  inv[v]=k
+	end
+	return inv[minval]
+end
+   
 local function vizinhos(nodo)
 	local  adj = {} --constrói a tabela de nodos adjacentes ao atual
 	for i,v in ipairs(caminhos) do
