@@ -8,14 +8,14 @@ return t2 end
 local nvst = shallow_copy(tortas) -- nodos não visitados
 local mpath = {} -- tabela com nodo|peso|ult. visitado
 
-local function minkey(initialtable) --O que essa função deveria fazer?
+local function minkey(initialtable)
 	local orderedTable = {}
-	orderedTable = shallow_copy(initialtable)
+	orderedTable = unpack(initialtable)
 	table.sort(orderedTable)
 	local minval = orderedTable[1]
 	local inv={}
 	for k,v in pairs(initialtable) do
-		inv[v]=k
+		inv[v]=k -- Dá problema quando temos valores repeteidos na tabela. Não vai rolar bem aqui
 	end
 return inv[minval] end
 
@@ -25,9 +25,11 @@ function menorCaminho(origem, alvo)--, tipo)
 	local dist = {} --constrói a tabela de nodos adjacentes ao atual
 	local lastVisited = {}
 	local unvisited = {}  -- copy nodes from original table
+	local distUnvisited = {}
 
 	for i,v in ipairs(tortas) do
 		dist[v] = math.huge
+		distUnvisited[v] = math.huge
 		lastVisited[v] = nil
 		table.insert(unvisited, v)
 	end
@@ -54,8 +56,8 @@ function menorCaminho(origem, alvo)--, tipo)
 			table.insert(caminho, u)
 			u = lastVisited[u]
 		end
-	return caminho end
-end
+	end
+return caminho end
 
 local function vizinhos(nodo)
 	local  adj = {} --constrói a tabela de nodos adjacentes ao atual
