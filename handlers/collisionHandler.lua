@@ -8,14 +8,3 @@ function CheckCollision(obj1, obj2)
         y1 < y2+h2 and
         y2 < y1+h1
 end
-
-function tortaCollision(x, y, r)
-	--Checa se o quadrado nas coordenadas (x,y) e "raio" r colide com alguma torta;
-	--Retorna a torta que foi colidida ou falso;
-	local r = r or 1
-	local Obj2 = Torta(x, y, r)
-	for i=1,#mundo.tortas do
-    	if CheckCollision(mundo.tortas[i], Obj2) then
-    		return mundo.tortas[i] end
-        end
-return false end

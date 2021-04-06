@@ -79,3 +79,14 @@ function Mundo:update(dt)
 		v:update(dt)
 	end
 end
+
+function Mundo:tortaCollision(x, y, r)
+	--Checa se o quadrado nas coordenadas (x,y) e "raio" r colide com alguma torta;
+	--Retorna a torta que foi colidida ou falso;
+	local r = r or 1
+	local Obj2 = Torta(x, y, r)
+	for i=1,#self.tortas do
+    	if CheckCollision(self.tortas[i], Obj2) then
+    		return self.tortas[i] end
+        end
+return false end

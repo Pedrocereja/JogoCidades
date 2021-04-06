@@ -50,7 +50,7 @@ function love.mousepressed(x, y, button)
 	if button == 1 then
 		--se clicar em uma torta, você pode posicionar uma torta nova
 		if onMouse == 0 then
-			local tcolididaMouse = tortaCollision(x, y)
+			local tcolididaMouse = mundo:tortaCollision(x, y)
 			if tcolididaMouse then
 				local torta = Torta(tcolididaMouse.x, tcolididaMouse.y)
 				local caminho = Caminho(tcolididaMouse, torta)
@@ -60,8 +60,8 @@ function love.mousepressed(x, y, button)
 				onMouse.caminho = caminho
 			end
 		elseif onMouse ~= 0 then
-			local tcolididaMouse = tortaCollision(x,y)
-			if not tortaCollision(x, y, onMouse.r) then --se contrução não colide
+			local tcolididaMouse = mundo:tortaCollision(x,y)
+			if not mundo:tortaCollision(x, y, onMouse.r) then --se contrução não colide
 				mundo:remove(onMouse.caminho)
 				mundo:inserir(onMouse.caminho, "path")
 				onMouse.caminho = nil

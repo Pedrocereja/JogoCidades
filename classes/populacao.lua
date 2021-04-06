@@ -16,7 +16,7 @@ end
 
 function Populacao:update()
 	--Entra na cidade-casa quando colidir com ela
-	local cidadeColidida = tortaCollision(self.x, self.y, self.r)
+	local cidadeColidida = mundo:tortaCollision(self.x, self.y, self.r)
 	if cidadeColidida==self.home then
 		table.insert(cidadeColidida.populacao, self)
 		mundo:remove(self)
