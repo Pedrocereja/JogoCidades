@@ -15,7 +15,7 @@ function love.load()
     camera:setFollowLerp(0.2)
 
 	mundo = Mundo()
-	onMouse = 0 --objeto seguindo o mouse
+	onMouse = {} --objeto seguindo o mouse
 
     --desenha uma torta inicial no meio da tela e a popula com 3 habitantes
     local width, height = love.graphics.getDimensions()
@@ -48,47 +48,37 @@ end
 function love.mousepressed(x, y, button)
 	x, y = camera:toWorldCoords(x, y)
 	if button == 1 then
-		--se clicar em uma torta, você pode posicionar uma torta nova
-		if onMouse == 0 then
-			local tcolididaMouse = mundo:tortaCollision(x, y)
-			if tcolididaMouse then
-				local torta = Torta(tcolididaMouse.x, tcolididaMouse.y)
-				local caminho = Caminho(tcolididaMouse, torta)
+		tortaColidida = mundo:tortaCollision(x, y)
+		if tortaColidida then
+			if #onMouse==0 then
+				local torta = Torta(tortaColidida.x, tortaColidida.y)
+				local caminho = Caminho(tortaColidida, torta)
 				mundo:inserir(torta, "UI")
 				mundo:inserir(caminho, "UI")
-				onMouse = torta
-				onMouse.caminho = caminho
+				onMouse[1] = torta
+				onMouse[2] = caminho
+			elseif #onMouse>0 and tortaColidida.x==onMouse[1].xorigin and tortaColidida.y==onMouse[1].yorigin then
+				onMouse[1].r = onMouse[1].r-10
+				if onMouse[1].r < 10 then onMouse[1].r = 50 end
+			elseif #onMouse>0 and tortaColidida.x~=onMouse[1].xorigin or tortaColidida.y~=onMouse[1].yorigin then
+				onMouse[1].xorigin, onMouse[1].yorigin, onMouse[1].r = tortaColidida.x, tortaColidida.y, 50
+				onMouse[2]:new(onMouse[1], tortaColidida)
 			end
-		elseif onMouse ~= 0 then
-			local tcolididaMouse = mundo:tortaCollision(x,y)
-			if not mundo:tortaCollision(x, y, onMouse.r) then --se contrução não colide
-				mundo:remove(onMouse.caminho)
-				mundo:inserir(onMouse.caminho, "caminho")
-				onMouse.caminho = nil
-				mundo:remove(onMouse)
-				mundo:inserir(onMouse, "torta")
-		   		local pessoa = Populacao(onMouse)
+		elseif not tortaColidida then
+			if #onMouse>0 and not mundo:tortaCollision(onMouse[1].x, onMouse[1].y, onMouse[1].r) then
+				mundo:remove(onMouse[1])
+				mundo:remove(onMouse[2])
+				mundo:inserir(onMouse[1], "torta")
+				mundo:inserir(onMouse[2], "caminho")
+		   		local pessoa = Populacao(onMouse[1])
 		   		mundo:inserir(pessoa, "UI")
-				onMouse = 0
-			elseif (tcolididaMouse)and(tcolididaMouse.x==onMouse.xorigin)and(tcolididaMouse.y==onMouse.yorigin) then --se construção colide com sua base reduz tamanho
-				onMouse.r = onMouse.r-10
-				if onMouse.r < 10 then onMouse.r = 50 end
-			elseif (tcolididaMouse) then --se construção colide com não base "rebaseia"
-				if (tcolididaMouse.x~=onMouse.xorigin)or(tcolididaMouse.y~=onMouse.yorigin) then
-					onMouse.xorigin, onMouse.yorigin, onMouse.r = tcolididaMouse.x, tcolididaMouse.y, 50
-					onMouse.caminho:new(onMouse, tcolididaMouse)
-				end
-			elseif not tcolididaMouse then --blink()
-				print("TODO construção piscar em vermelho quando suas bordas colidem mas o mouse não")
+				onMouse = {}
 			end
-	   	end
+		end
 	elseif button ==2 then
-		--limpa construção no mouse
-		if onMouse ~= 0 then
-	   		mundo:remove(onMouse)
-			mundo:remove(onMouse.caminho)
-			onMouse.caminho = nil
-			onMouse = 0
+		while #onMouse>0 do
+			mundo:remove(onMouse[#onMouse])
+			table.remove(onMouse, #onMouse)
 		end
 	end
 end
