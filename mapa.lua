@@ -13,8 +13,8 @@ local map_offset_x = 30
 local map_offset_y = 30
 local map_display_w = 14
 local map_display_h = 10
-local tile_w = 48
-local tile_h = 48
+local tile_w = 32
+local tile_h = 32
 local map_display_buffer = 2 -- We have to buffer one tile before and behind our viewpoint.
                         -- Otherwise, the tiles will just pop into view, and we don't want that
 
