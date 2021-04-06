@@ -1,20 +1,20 @@
 local function shallow_copy(t)
-	local t2 = {}
+	local copy = {}
 	for k,v in pairs(t) do
-	  t2[k] = v
+	  copy[k] = v
 	end
-	return t2
+	return copy
 end
 
-local nvst = shallow_copy(mundo.tortas) -- nodos não visitados
-local mpath = {} -- tabela com nodo|peso|ult. visitado
+local nodos = shallow_copy(mundo.tortas)
+local arestas = shallow_copy(mundo.caminhos)
 
 local function next_node(unvisited, distances)
 	local unvisited_distances = {}
 	for i,k in pairs(unvisited) do
 		unvisited_distances[k] = distances[k]
 	end
-	for key, value in ipairs(mundo.tortas) do
+	for key, value in ipairs(nodos) do
 		print(key, value.itortas)
 	end
 	local minval = math.min(unpack(unvisited_distances))
@@ -30,11 +30,11 @@ return inv[minval] end
    
 local function vizinhos(nodo)
 	local  adj = {} --constrói a tabela de nodos adjacentes ao atual
-	for i,v in ipairs(mundo.caminhos) do
-		if v.T1 == nodo then
-			table.insert(adj, v.T2)
-		elseif v.T2 == nodo then
-			table.insert(adj, v.T1)
+	for i,v in ipairs(arestas) do
+		if v.inicio == nodo then
+			table.insert(adj, v.fim)
+		elseif v.fim == nodo then
+			table.insert(adj, v.inicio)
 		end 
 	end
 return adj end
@@ -50,7 +50,7 @@ function menorCaminho(origem, alvo)--, tipo)
 	local dist = {} --constrói a tabela de nodos adjacentes ao atual
 	local lastVisited = {}
 	local unvisited = {}  -- copy nodes from original table
-	for i,v in ipairs(mundo.tortas) do
+	for i,v in ipairs(nodos) do
 		dist[v] = math.huge
 		lastVisited[v] = nil
 		table.insert(unvisited, v)
