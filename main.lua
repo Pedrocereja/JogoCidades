@@ -1,18 +1,21 @@
 function love.load()
-	love.graphics.setDefaultFilter("nearest", "nearest")
+	love.graphics.setDefaultFilter("nearest", "nearest") --não interpola os desenhos, evitando blurry na pixel art
 
     Object = require "libs.classic"
     require "classes.populacao"
     require "classes.torta"
     require "classes.caminho"
     require "handlers.gerenciadorMundo"
+	require "handlers.collisionHandler"
 	--require "handlers.menorCaminho"
     require "mapa"
-    Camera = require "Camera"
 
-	onMouse = 0 --objeto seguindo o mouse
+    Camera = require "Camera"
 	camera = Camera()
     camera:setFollowLerp(0.2)
+
+	mundo = Mundo()
+	onMouse = 0 --objeto seguindo o mouse
 
     --desenha uma torta inicial no meio da tela e a popula com 3 habitantes
     local width, height = love.graphics.getDimensions()
@@ -20,30 +23,26 @@ function love.load()
     local pessoa = Populacao(torta)
     local pessoa1 = Populacao(torta)
     local pessoa2 = Populacao(torta)
-    insMundo(pessoa, "UI")
-    insMundo(pessoa1, "UI")
-    insMundo(pessoa2, "UI")
-    insMundo(torta, "torta")
+    mundo:inserir(pessoa, "UI")
+    mundo:inserir(pessoa1, "UI")
+    mundo:inserir(pessoa2, "UI")
+    mundo:inserir(torta, "torta")
     camera:follow(width/2, height/2)
 end
 
 function love.draw()
 	camera:attach()
+
 	draw_map()
-    for i,v in ipairs(draws) do
-        v:draw()
-    end
+	mundo:draw()
+
     camera:detach()
 end
 
 function love.update(dt)
 	camera:update(dt)
-	--camera:follow(x, y) 
 	camera:newmove(dt, 700)
-
-	for i,v in ipairs(updates) do
-		v:update(dt)
-	end
+	mundo:update(dt)
 end
 
 function love.mousepressed(x, y, button)
@@ -55,21 +54,21 @@ function love.mousepressed(x, y, button)
 			if tcolididaMouse then
 				local torta = Torta(tcolididaMouse.x, tcolididaMouse.y)
 				local caminho = Caminho(tcolididaMouse, torta)
-				insMundo(torta, "UI")
-				insMundo(caminho, "UI")
+				mundo:inserir(torta, "UI")
+				mundo:inserir(caminho, "UI")
 				onMouse = torta
 				onMouse.caminho = caminho
 			end
 		elseif onMouse ~= 0 then
 			local tcolididaMouse = tortaCollision(x,y)
 			if not tortaCollision(x, y, onMouse.r) then --se contrução não colide
-				rmMundo(onMouse.caminho)
-				insMundo(onMouse.caminho, "path")
+				mundo:remove(onMouse.caminho)
+				mundo:inserir(onMouse.caminho, "path")
 				onMouse.caminho = nil
-				rmMundo(onMouse)
-				insMundo(onMouse, "torta")
+				mundo:remove(onMouse)
+				mundo:inserir(onMouse, "torta")
 		   		local pessoa = Populacao(onMouse)
-		   		insMundo(pessoa, "UI")
+		   		mundo:inserir(pessoa, "UI")
 				onMouse = 0
 			elseif (tcolididaMouse)and(tcolididaMouse.x==onMouse.xorigin)and(tcolididaMouse.y==onMouse.yorigin) then --se construção colide com sua base reduz tamanho
 				onMouse.r = onMouse.r-10
@@ -86,8 +85,8 @@ function love.mousepressed(x, y, button)
 	elseif button ==2 then
 		--limpa construção no mouse
 		if onMouse ~= 0 then
-	   		rmMundo(onMouse)
-			rmMundo(onMouse.caminho)
+	   		mundo:remove(onMouse)
+			mundo:remove(onMouse.caminho)
 			onMouse.caminho = nil
 			onMouse = 0
 		end
@@ -95,7 +94,7 @@ function love.mousepressed(x, y, button)
 end
 
 function love.mousemoved(x, y)
-	for i,v in ipairs(tortas) do
+	for i,v in ipairs(mundo.tortas) do
 		v:showInfo(x, y)
 	end
 end

@@ -19,7 +19,7 @@ function Populacao:update()
 	local cidadeColidida = tortaCollision(self.x, self.y, self.r)
 	if cidadeColidida==self.home then
 		table.insert(cidadeColidida.populacao, self)
-		rmMundo(self)
+		mundo:remove(self)
 	else self:moveto(self.home) --se não estiver na cidade-casa, vai para ela
 	end
 end
