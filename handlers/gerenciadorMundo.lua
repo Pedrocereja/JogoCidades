@@ -6,7 +6,6 @@ updates = {} --lista de objetos com propriedade ".update"
 draws = {} --lista de objetos com propriedade ".draw"
 tortas = {}
 caminhos = {}
---terreno = {}
 
 function insMundo(Obj, layer)
 	--Cria o objeto no mundo do jogo, em uma das seguintes layers: "torta", "pessoa" "UI"

@@ -6,7 +6,7 @@ function Torta:new(x, y, r)
 	self.r = r or 50
 	self.xorigin = x
 	self.yorigin = y
-	self.habitantes = {}
+	self.populacao = {}
 end
 
 function Torta:update(dt)
@@ -15,11 +15,11 @@ end
 
 function Torta:draw()
     love.graphics.circle("fill", self.x, self.y, self.r)
-	love.graphics.setColor(0,0,255)
-	for i,v in ipairs(self.habitantes) do
-		love.graphics.circle("fill", self.x-self.r+v.r+12*(i-1), self.y+self.r-v.r, v.r)
+
+	--desenho dos habitantes no canto inferior esquerdo da cidade
+	for i,habitante in ipairs(self.populacao) do
+		love.graphics.draw(habitante.image, self.x-self.r+habitante.r+15*(i-1), self.y+self.r-habitante.r)
 	end
-	love.graphics.setColor(255,255,255)
 end
 
 function Torta:showInfo(x, y)
@@ -27,6 +27,5 @@ function Torta:showInfo(x, y)
 	if CheckCollision(self, torta) and self.mostrador==nil then
 		--self.mostrador = "Não há recursos"
 		--print("Não há recursos")
-		--elseif then
 	end
 end

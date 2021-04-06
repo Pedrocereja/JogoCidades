@@ -2,22 +2,23 @@ Populacao = Object:extend()
 
 function Populacao:new(home)
 	-- Habitantes de uma torta "home"
+	self.image = love.graphics.newImage("/images/pessoa.png")
 	self.home = home
 	self.x = home.x
 	self.y = home.y
-	self.r = 5
+	self.r = 9
 	self.velocidade = 1
 end
 
 function Populacao:draw()
-	love.graphics.circle("fill", self.x, self.y, self.r)
+	love.graphics.draw(self.image, self.x, self.y)
 end
 
 function Populacao:update()
 	--Entra na cidade-casa quando colidir com ela
-	local aux = tortaCollision(self.x, self.y, self.r)
-	if aux==self.home then
-		table.insert(aux.habitantes, self)
+	local cidadeColidida = tortaCollision(self.x, self.y, self.r)
+	if cidadeColidida==self.home then
+		table.insert(cidadeColidida.populacao, self)
 		rmMundo(self)
 	else self:moveto(self.home) --se não estiver na cidade-casa, vai para ela
 	end

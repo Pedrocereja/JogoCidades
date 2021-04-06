@@ -14,11 +14,18 @@ local function next_node(unvisited, distances)
 	for i,k in pairs(unvisited) do
 		unvisited_distances[k] = distances[k]
 	end
+	for key, value in ipairs(tortas) do
+		print(key, value.itortas)
+	end
 	local minval = math.min(unpack(unvisited_distances))
+	--print(minval)
 	local inv={}
 	for k,v in pairs(unvisited_distances) do
 	  inv[v]=k
 	end
+	--for index, value in pairs(unvisited_distances) do
+		--print(index, value)
+	--end
 return inv[minval] end
    
 local function vizinhos(nodo)
@@ -43,11 +50,8 @@ function menorCaminho(origem, alvo)--, tipo)
 	local dist = {} --constrói a tabela de nodos adjacentes ao atual
 	local lastVisited = {}
 	local unvisited = {}  -- copy nodes from original table
-	local distUnvisited = {}
-
 	for i,v in ipairs(tortas) do
 		dist[v] = math.huge
-		distUnvisited[v] = math.huge
 		lastVisited[v] = nil
 		table.insert(unvisited, v)
 	end
@@ -67,10 +71,11 @@ function menorCaminho(origem, alvo)--, tipo)
 	-- gera caminho ate B
 	local caminho = {}
 	local u = alvo
-	if lastVisited[u] ~= nil or u == origem then
+	if lastVisited[u] ~= nil or u ~= origem then
 		while u ~= nil do
 			table.insert(caminho, u)
 			u = lastVisited[u]
+			--print(u)
 		end
 	end
 return caminho end
