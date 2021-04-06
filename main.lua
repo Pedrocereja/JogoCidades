@@ -1,4 +1,6 @@
 function love.load()
+	love.graphics.setDefaultFilter("nearest", "nearest")
+
     Object = require "libs.classic"
     require "classes.populacao"
     require "classes.torta"
