@@ -7,10 +7,10 @@ function love.load()
     require "classes.caminho"
     require "handlers.gerenciadorMundo"
 	require "handlers.collisionHandler"
+	local Camera = require "handlers.Camera"
 	--require "handlers.menorCaminho"
     require "mapa"
 
-    Camera = require "Camera"
 	camera = Camera()
     camera:setFollowLerp(0.2)
 
@@ -63,7 +63,7 @@ function love.mousepressed(x, y, button)
 			local tcolididaMouse = mundo:tortaCollision(x,y)
 			if not mundo:tortaCollision(x, y, onMouse.r) then --se contrução não colide
 				mundo:remove(onMouse.caminho)
-				mundo:inserir(onMouse.caminho, "path")
+				mundo:inserir(onMouse.caminho, "caminho")
 				onMouse.caminho = nil
 				mundo:remove(onMouse)
 				mundo:inserir(onMouse, "torta")

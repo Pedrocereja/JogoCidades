@@ -27,7 +27,7 @@ function Mundo:inserir(Obj, layer)
 	    table.insert(self.desenhos, Obj)
 		Obj.iupdates = #self.updates
 		Obj.idraws = #self.desenhos
-	elseif (layer=="path") then
+	elseif (layer=="caminho") then
 		table.insert(self.caminhos, Obj)
 	    table.insert(self.desenhos, Obj)
 		Obj.icaminhos = #self.updates
