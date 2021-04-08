@@ -8,8 +8,10 @@ function love.load()
     require "handlers.Mundo"
 	require "handlers.collisionHandler"
 	local Camera = require "handlers.Camera"
-	--require "handlers.menorCaminho"
+	require "handlers.Dijkstra"
     require "mapa"
+
+	aux = 0
 
 	camera = Camera()
     camera:setFollowLerp(0.2)
@@ -28,6 +30,7 @@ function love.load()
     mundo:inserir(pessoa2, "UI")
     mundo:inserir(torta, "torta")
     camera:follow(width/2, height/2)
+	dijkstra = Dijkstra(torta)
 end
 
 function love.draw()
@@ -43,28 +46,29 @@ function love.update(dt)
 	camera:update(dt)
 	camera:newmove(dt, 700)
 	mundo:update(dt)
+	dijkstra:update(mundo.tortas, mundo.caminhos)
 end
 
 function love.mousepressed(x, y, button)
 	x, y = camera:toWorldCoords(x, y)
 	if button == 1 then
-		tortaColidida = mundo:tortaCollision(x, y)
-		if tortaColidida then
+		tortaClicada = mundo:tortaCollision(x, y)
+		if tortaClicada then
 			if #onMouse==0 then
-				local torta = Torta(tortaColidida.x, tortaColidida.y)
-				local caminho = Caminho(tortaColidida, torta)
+				local torta = Torta(tortaClicada.x, tortaClicada.y)
+				local caminho = Caminho(tortaClicada, torta)
 				mundo:inserir(torta, "UI")
 				mundo:inserir(caminho, "UI")
 				onMouse[1] = torta
 				onMouse[2] = caminho
-			elseif #onMouse>0 and tortaColidida.x==onMouse[1].xorigin and tortaColidida.y==onMouse[1].yorigin then
+			elseif #onMouse>0 and tortaClicada.x==onMouse[1].xorigin and tortaClicada.y==onMouse[1].yorigin then
 				onMouse[1].r = onMouse[1].r-10
 				if onMouse[1].r < 10 then onMouse[1].r = 50 end
-			elseif #onMouse>0 and tortaColidida.x~=onMouse[1].xorigin or tortaColidida.y~=onMouse[1].yorigin then
-				onMouse[1].xorigin, onMouse[1].yorigin, onMouse[1].r = tortaColidida.x, tortaColidida.y, 50
-				onMouse[2]:new(onMouse[1], tortaColidida)
+			elseif #onMouse>0 and tortaClicada.x~=onMouse[1].xorigin or tortaClicada.y~=onMouse[1].yorigin then
+				onMouse[1].xorigin, onMouse[1].yorigin, onMouse[1].r = tortaClicada.x, tortaClicada.y, 50
+				onMouse[2]:new(onMouse[1], tortaClicada)
 			end
-		elseif not tortaColidida then
+		elseif not tortaClicada then
 			if #onMouse>0 and not mundo:tortaCollision(onMouse[1].x, onMouse[1].y, onMouse[1].r) then
 				mundo:remove(onMouse[1])
 				mundo:remove(onMouse[2])
@@ -75,10 +79,18 @@ function love.mousepressed(x, y, button)
 				onMouse = {}
 			end
 		end
-	elseif button ==2 then
+	elseif button == 2 then
 		while #onMouse>0 do
 			mundo:remove(onMouse[#onMouse])
 			table.remove(onMouse, #onMouse)
+		end
+	elseif button == 3 then
+		local tortaClicada = mundo:tortaCollision(x, y)
+		if tortaClicada then
+			local caminho = dijkstra:menorCaminho(tortaClicada)
+			for i, value in ipairs(caminho) do
+				print(caminho[i])
+			end
 		end
 	end
 end
@@ -92,5 +104,4 @@ end
 function love.wheelmoved(x, y)
 	camera.scale = camera.scale + y*.1
 	if camera.scale < .1 then camera.scale = .1 end
-	print(camera.scale)
 end
