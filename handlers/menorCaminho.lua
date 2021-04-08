@@ -1,4 +1,4 @@
-local function shallow_copy(t)
+local function shallowCopy(t)
 	local copy = {}
 	for k,v in pairs(t) do
 	  copy[k] = v
@@ -6,10 +6,10 @@ local function shallow_copy(t)
 	return copy
 end
 
-local nodos = shallow_copy(mundo.tortas)
-local arestas = shallow_copy(mundo.caminhos)
+local nodos = shallowCopy(mundo.tortas)
+local arestas = shallowCopy(mundo.caminhos)
 
-local function next_node(unvisited, distances)
+local function getNextNode(unvisited, distances)
 	local unvisited_distances = {}
 	for i,k in pairs(unvisited) do
 		unvisited_distances[k] = distances[k]
@@ -57,7 +57,7 @@ function menorCaminho(origem, alvo)--, tipo)
 	end
 	dist[origem] = 0
 	while #unvisited > 0 do
-		local u = next_node(unvisited, dist)
+		local u = getNextNode(unvisited, dist)
 		table.remove(unvisited, u)
 		for i, v in pairs(vizinhos(u)) do
 			local temp = dist[u] + distance(u,v)

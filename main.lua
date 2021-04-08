@@ -2,10 +2,10 @@ function love.load()
 	love.graphics.setDefaultFilter("nearest", "nearest") --não interpola os desenhos, evitando blurry na pixel art
 
     Object = require "libs.classic"
-    require "classes.populacao"
-    require "classes.torta"
-    require "classes.caminho"
-    require "handlers.gerenciadorMundo"
+    require "classes.Populacao"
+    require "classes.Torta"
+    require "classes.Caminho"
+    require "handlers.Mundo"
 	require "handlers.collisionHandler"
 	local Camera = require "handlers.Camera"
 	--require "handlers.menorCaminho"
