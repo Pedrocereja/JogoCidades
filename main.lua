@@ -10,6 +10,7 @@ function love.load()
 	local Camera = require "handlers.Camera"
 	require "handlers.Dijkstra"
     require "mapa"
+	require "handlers.debuggingFunctions"
 
 	aux = 0
 
@@ -88,8 +89,9 @@ function love.mousepressed(x, y, button)
 		local tortaClicada = mundo:tortaCollision(x, y)
 		if tortaClicada then
 			local caminho = dijkstra:menorCaminho(tortaClicada)
-			for i, value in ipairs(caminho) do
-				print(caminho[i])
+			print("O caminho para a torta " .. tortaClicada.itortas .. " é:")
+			for key, value in pairs(caminho) do
+				print(value.itortas)
 			end
 		end
 	end

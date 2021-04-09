@@ -15,40 +15,41 @@ function Dijkstra:update(nodos, arestas)
 end
 
 function Dijkstra:menorCaminho(alvo)--, tipo)
-	local lastVisited = self:getLastVisited()
+	self:setInitialValues()
+	self:setLastVisited()
 	local caminho = {}
-	local alvo
-	if lastVisited[alvo]~=nil and alvo~=self.origem then
+	local alvo = alvo
+	if self.lastVisited[alvo]~=nil and alvo~=self.origem then
 		while alvo~=nil do
 			table.insert(caminho, alvo)
-			alvo = lastVisited[alvo]
+			alvo = self.lastVisited[alvo]
 		end
 	end
 	caminho = Dijkstra:inverterOrdem(caminho)
 return caminho end
-
-function Dijkstra:getLastVisited()
-	self:setInitialValues()
-	while #self.unvisited>0 do
-		local actualNode = self:getShorterNode()
-		self.unvisited[actualNode] = nil
-		for i, vizinho in pairs(self:vizinhos(actualNode)) do
-			local distVizinho = self.distances[actualNode] + self:distance(actualNode, vizinho)
-			if distVizinho < self.distances[vizinho] then
-				self.lastVisited[vizinho] = actualNode
-				self.distances[vizinho] = distVizinho
-			end
-		end
-	end
-return self.lastVisited end
 
 function Dijkstra:setInitialValues()
 	for i,v in ipairs(self.nodos) do
 		self.distances[v] = math.huge
 		self.lastVisited[v] = nil
 		table.insert(self.unvisited, v)
+		v.iunvisited = #self.unvisited
 	end
 	self.distances[self.origem] = 0
+end
+
+function Dijkstra:setLastVisited()
+	while #self.unvisited>0 do
+		local actualNode = self:getShorterNode()
+		self:removeFromUnvisited(actualNode)
+		for i, vizinho in pairs(self:vizinhos(actualNode)) do
+			local distVizinho = self.distances[actualNode] + self:getDistance(actualNode, vizinho)
+			if distVizinho < self.distances[vizinho] then
+				self.lastVisited[vizinho] = actualNode
+				self.distances[vizinho] = distVizinho
+			end
+		end
+	end
 end
 
 function Dijkstra:getShorterNode()
@@ -59,6 +60,13 @@ function Dijkstra:getShorterNode()
 		end
 	end
 return closerNode end
+
+function Dijkstra:removeFromUnvisited(nodo)
+	table.remove(self.unvisited, nodo.iunvisited)
+	for i=nodo.iunvisited,#self.unvisited do
+		self.unvisited[i].iunvisited=self.unvisited[i].iunvisited-1
+	end
+end
    
 function Dijkstra:vizinhos(nodo)
 	local  adjacentes = {}
@@ -71,7 +79,7 @@ function Dijkstra:vizinhos(nodo)
 	end
 return adjacentes end
 
-function Dijkstra:distance(T1, T2)
+function Dijkstra:getDistance(T1, T2)
 	local dist = (T1.x-T2.x)^2+(T1.y-T2.y)^2
 	dist = math.sqrt(dist)
 return dist end
