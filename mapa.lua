@@ -52,21 +52,18 @@ local map_w = #map[1]
 local map_h = #map
 local map_x = 0
 local map_y = 0
-local map_offset_x = 30
-local map_offset_y = 30
-local map_display_w = 14
-local map_display_h = 10
+local map_display_buffer = 4
+
+local map_display_w = 25
+local map_display_h = 19
 local tile_w = 32
 local tile_h = 32
-local map_display_buffer = 2 -- We have to buffer one tile before and behind our viewpoint.
-                        -- Otherwise, the tiles will just pop into view, and we don't want that
 
-function draw_map()
-   offset_x = map_x % tile_w
-   --print(offset_x)
-   offset_y = map_y % tile_h
-   firstTile_x = math.floor(map_x / tile_w)
-   firstTile_y = math.floor(map_y / tile_h)
+function drawMap()
+   local offset_x = map_x % tile_w --recua igual a sobra do tile, para renderizar "meio tile"
+   local offset_y = map_y % tile_h
+   local firstTile_x = math.floor(map_x / tile_w)
+   local firstTile_y = math.floor(map_y / tile_h)
    
    for y=1, (map_display_h + map_display_buffer) do
       for x=1, (map_display_w + map_display_buffer) do
@@ -76,16 +73,17 @@ function draw_map()
          then
             love.graphics.draw(
                tile[map[y+firstTile_y][x+firstTile_x]], 
-               ((x-1)*tile_w) - offset_x - tile_w/2, 
-               ((y-1)*tile_h) - offset_y - tile_h/2)
+               ((firstTile_x+x-1)*tile_w) - offset_x - tile_w/2, 
+               ((firstTile_y+y-1)*tile_h) - offset_y - tile_h/2)
          end
       end
    end
 end
 
 function updateMap()
-	map_y = camera.y-camera.h/2
-	map_x = camera.x-camera.w/2
-   map_display_w = camera.w/camera.scale
-   map_display_h = camera.h/camera.scale
+	map_x = (camera.x - camera.w/2)/camera.scale
+	map_y = (camera.y - camera.h/2)/camera.scale
+   map_display_w = math.ceil(camera.w/camera.scale)/tile_w
+   map_display_h = math.ceil(camera.h/camera.scale)/tile_h
+   print("Mapax: " .. map_x .. " Mapay: " ..map_y)
 end

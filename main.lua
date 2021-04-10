@@ -34,7 +34,7 @@ end
 function love.draw()
 	camera:attach()
 
-	draw_map()
+	drawMap()
 	mundo:draw()
 
     camera:detach()
@@ -44,7 +44,7 @@ function love.update(dt)
 	camera:update(dt)
 	mundo:update(dt)
 	dijkstra:update(mundo.tortas, mundo.caminhos)
-	--updateMap()
+	updateMap()
 	print(camera.x, camera.y, camera.w, camera.h, camera.scale)
 end
 
