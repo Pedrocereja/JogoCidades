@@ -31,6 +31,14 @@ function love.load()
 	dijkstra = Dijkstra(torta)
 end
 
+function love.update(dt)
+	camera:update(dt)
+	mundo:update(dt)
+	dijkstra:update(mundo.tortas, mundo.caminhos)
+	updateMap()
+	print(camera.x, camera.y, camera.w, camera.h, camera.scale)
+end
+
 function love.draw()
 	camera:attach()
 
@@ -38,14 +46,6 @@ function love.draw()
 	mundo:draw()
 
     camera:detach()
-end
-
-function love.update(dt)
-	camera:update(dt)
-	mundo:update(dt)
-	dijkstra:update(mundo.tortas, mundo.caminhos)
-	updateMap()
-	print(camera.x, camera.y, camera.w, camera.h, camera.scale)
 end
 
 function love.mousepressed(x, y, button)

@@ -1,7 +1,6 @@
--- our tiles
-local tile = {}
-for i=0,3 do -- change 3 to the number of tile images minus 1.
-   tile[i] = love.graphics.newImage( "images/tile"..i..".png" )
+local tiles = {}
+for i=0,3 do
+   tiles[i] = love.graphics.newImage( "images/tile"..i..".png" )
 end
 
 local map={
@@ -47,43 +46,43 @@ local map={
    { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 2, 2, 2, 0, 0, 3, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0},
 }
 
--- map variables
-local map_w = #map[1]
-local map_h = #map
-local map_x = 0
-local map_y = 0
-local map_display_buffer = 4
+local mapW = #map[1]
+local mapH = #map
+local mapX = 0
+local mapY = 0
 
-local map_display_w = 25
-local map_display_h = 19
-local tile_w = 32
-local tile_h = 32
+local numberOfBufferedTiles = 4
+local mapDisplayWidth = 25
+local mapDisplayHeight = 19
+
+local tileW = 32
+local tileH = 32
 
 function drawMap()
-   local offset_x = map_x % tile_w --recua igual a sobra do tile, para renderizar "meio tile"
-   local offset_y = map_y % tile_h
-   local firstTile_x = math.floor(map_x / tile_w)
-   local firstTile_y = math.floor(map_y / tile_h)
+   local offsetX = mapX % tileW
+   local offsetY = mapY % tileH
+   local firstTileX = math.floor(mapX / tileW)
+   local firstTileY = math.floor(mapY / tileH)
    
-   for y=1, (map_display_h + map_display_buffer) do
-      for x=1, (map_display_w + map_display_buffer) do
+   for y=1, (mapDisplayHeight + numberOfBufferedTiles) do
+      for x=1, (mapDisplayWidth + numberOfBufferedTiles) do
          -- Note that this condition block allows us to go beyond the edge of the map.
-         if y+firstTile_y >= 1 and y+firstTile_y <= map_h
-            and x+firstTile_x >= 1 and x+firstTile_x <= map_w
+         if y+firstTileY >= 1 and y+firstTileY <= mapH
+            and x+firstTileX >= 1 and x+firstTileX <= mapW
          then
             love.graphics.draw(
-               tile[map[y+firstTile_y][x+firstTile_x]], 
-               ((firstTile_x+x-1)*tile_w) - offset_x - tile_w/2, 
-               ((firstTile_y+y-1)*tile_h) - offset_y - tile_h/2)
+               tiles[map[y+firstTileY][x+firstTileX]], 
+               ((firstTileX+x-1)*tileW) - offsetX - tileW/2, 
+               ((firstTileY+y-1)*tileH) - offsetY - tileH/2)
          end
       end
    end
 end
 
 function updateMap()
-	map_x = (camera.x - camera.w/2)/camera.scale
-	map_y = (camera.y - camera.h/2)/camera.scale
-   map_display_w = math.ceil(camera.w/camera.scale)/tile_w
-   map_display_h = math.ceil(camera.h/camera.scale)/tile_h
-   print("Mapax: " .. map_x .. " Mapay: " ..map_y)
+	mapX = (camera.x - camera.w/2)/camera.scale
+	mapY = (camera.y - camera.h/2)/camera.scale
+   mapDisplayWidth = math.ceil(camera.w/camera.scale)/tileW
+   mapDisplayHeight = math.ceil(camera.h/camera.scale)/tileH
+   print("Mapax: " .. mapX .. " Mapay: " ..mapY)
 end
