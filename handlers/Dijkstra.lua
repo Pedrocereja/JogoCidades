@@ -1,4 +1,3 @@
---Local methods
 local function makeShallowCopy(table)
 	local copy = {}
 	for k,v in pairs(table) do
@@ -37,8 +36,8 @@ function Dijkstra:update(nodos, arestas)
 end
 
 function Dijkstra:menorCaminho(alvo)--, tipo)
-	Dijkstra:setInitialValues()
-	Dijkistra:setLastVisited()
+	self:setInitialValues()
+	self:setLastVisited()
 	local caminho = {}
 	local alvo = alvo
 	if self.lastVisited[alvo]~=nil and alvo~=self.origem then
@@ -60,11 +59,11 @@ function Dijkstra:setInitialValues()
 	self.distances[self.origem] = 0
 end
 
-function Dijkistra:setLastVisited()
+function Dijkstra:setLastVisited()
 	while #self.unvisited>0 do
-		local actualNode = Dijkistra:getShorterNode()
-		Dijkistra:removeFromUnvisited(actualNode)
-		for i, vizinho in pairs(Dijkistra:vizinhos(actualNode)) do
+		local actualNode = self:getCloserNodeToOrigin()
+		self:removeFromUnvisited(actualNode)
+		for i, vizinho in pairs(self:vizinhos(actualNode)) do
 			local distVizinho = self.distances[actualNode] + getDistance(actualNode, vizinho)
 			if distVizinho < self.distances[vizinho] then
 				self.lastVisited[vizinho] = actualNode
@@ -74,7 +73,7 @@ function Dijkistra:setLastVisited()
 	end
 end
 
-function Dijkistra:getShorterNode()
+function Dijkstra:getCloserNodeToOrigin()
 	local closerNode = self.unvisited[#self.unvisited]
 	for i,nodo in pairs(self.unvisited) do
 		if self.distances[nodo]<self.distances[closerNode] then
@@ -83,14 +82,14 @@ function Dijkistra:getShorterNode()
 	end
 return closerNode end
 
-function Dijkistra:removeFromUnvisited(nodo)
+function Dijkstra:removeFromUnvisited(nodo)
 	table.remove(self.unvisited, nodo.iunvisited)
 	for i=nodo.iunvisited,#self.unvisited do
 		self.unvisited[i].iunvisited=self.unvisited[i].iunvisited-1
 	end
 end
 
-function Dijkistra:vizinhos(nodo)
+function Dijkstra:vizinhos(nodo)
 	local  adjacentes = {}
 	for i,aresta in ipairs(self.arestas) do
 		if aresta.inicio == nodo then
