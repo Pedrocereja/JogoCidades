@@ -62,3 +62,10 @@ function draw_map()
       end
    end
 end
+
+function updateMap()
+	map_y = camera.y-camera.h/2
+	map_x = camera.x-camera.w/2
+   map_display_w = camera.w*camera.scale
+   map_display_h = camera.h*camera.scale
+end

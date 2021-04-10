@@ -10,9 +10,6 @@ function love.load()
 	local Camera = require "handlers.Camera"
 	require "handlers.Dijkstra"
     require "mapa"
-	require "handlers.debuggingFunctions"
-
-	aux = 0
 
 	camera = Camera()
     camera:setFollowLerp(0.2)
@@ -45,9 +42,11 @@ end
 
 function love.update(dt)
 	camera:update(dt)
-	camera:newmove(dt, 700)
+	camera:newmove(dt, 700) --Inserir em update
 	mundo:update(dt)
 	dijkstra:update(mundo.tortas, mundo.caminhos)
+	--updateMap()
+	print(camera.x, camera.y, camera.w, camera.h, camera.scale)
 end
 
 function love.mousepressed(x, y, button)
@@ -105,5 +104,5 @@ end
 
 function love.wheelmoved(x, y)
 	camera.scale = camera.scale + y*.1
-	if camera.scale < .1 then camera.scale = .1 end
+	if camera.scale < .1 then camera.scale = .1 elseif camera.scale > 4 then camera.scale=4 end
 end
