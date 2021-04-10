@@ -71,16 +71,21 @@ local function getShakeAmplitude(self, t)
     return self.amplitude*(shakeNoise(self, s0) + (s - s0)*(shakeNoise(self, s1) - shakeNoise(self, s0)))*k
 end
 
+local function booleanToNumber(value)
+  return value and 1 or 0
+end
+
 -- Camera
 local Camera = {}
 Camera.__index = Camera
 
-local function new(x, y, w, h, scale, rotation)
+local function new(x, y, w, h, speed, scale, rotation)
     return setmetatable({
         x = x or (w or love.graphics.getWidth())/2, y = y or (h or love.graphics.getHeight())/2,
         mx = x or (w or love.graphics.getWidth())/2, my = y or (h or love.graphics.getHeight())/2,
         screen_x = x or (w or love.graphics.getWidth())/2, screen_y = y or (h or love.graphics.getHeight())/2,
         w = w or love.graphics.getWidth(), h = h or love.graphics.getHeight(),
+        speed = speed or 700,
         scale = scale or 1,
         rotation = rotation or 0,
         horizontal_shakes = {}, vertical_shakes = {},
@@ -141,6 +146,8 @@ end
 
 function Camera:update(dt)
     self.mx, self.my = self:toWorldCoords(love.mouse.getPosition())
+    self.target_x= self.target_x+(booleanToNumber(love.keyboard.isDown("right", 'd'))-booleanToNumber(love.keyboard.isDown("left", 'a')))*self.speed*dt
+    self.target_y= self.target_y+(booleanToNumber(love.keyboard.isDown("down", 's'))-booleanToNumber(love.keyboard.isDown("up", 'w')))*self.speed*dt
 
     -- Flash --
     if self.flashing then
@@ -319,14 +326,6 @@ end
 function Camera:follow(x, y)
     self.target_x, self.target_y = x, y
 end
-
-local function btn(value)
-  return value and 1 or 0
-end
-
-function Camera:newmove(dt, speed)
-    self.target_x, self.target_y = self.target_x+(btn(love.keyboard.isDown("right", 'd'))-btn(love.keyboard.isDown("left", 'a')))*speed*dt, self.target_y+(btn(love.keyboard.isDown("down", 's'))-btn(love.keyboard.isDown("up", 'w')))*speed*dt
-return self.target_x, self.target_y end
 
 function Camera:setDeadzone(x, y, w, h)
     self.deadzone = true

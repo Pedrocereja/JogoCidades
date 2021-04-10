@@ -42,7 +42,6 @@ end
 
 function love.update(dt)
 	camera:update(dt)
-	camera:newmove(dt, 700) --Inserir em update
 	mundo:update(dt)
 	dijkstra:update(mundo.tortas, mundo.caminhos)
 	--updateMap()
