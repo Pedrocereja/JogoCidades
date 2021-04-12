@@ -61,10 +61,9 @@ local tileH = 32
 function drawMap()
    local firstTileX = math.floor(mapX / tileW)
    local firstTileY = math.floor(mapY / tileH)
-   --print("offsetX: "..offsetX.." offsetY: "..offsetY) --debugging
-   
    local mapMaxYView = mapDisplayHeight + numberOfBufferedTiles
    local mapMaxXView = mapDisplayWidth + numberOfBufferedTiles
+
    for y=1, mapMaxYView do
       for x=1, mapMaxXView do
          if y+firstTileY >= 1 and y+firstTileY <= mapH
@@ -87,5 +86,4 @@ function updateMap()
 	mapX, mapY = cameraTopLeftPosition()
    mapDisplayWidth = math.ceil(camera.w/camera.scale)/tileW
    mapDisplayHeight = math.ceil(camera.h/camera.scale)/tileH
-   --print("Mapax: " .. mapX .. " Mapay: " ..mapY) debugging
 end
