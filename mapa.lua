@@ -59,30 +59,33 @@ local tileW = 32
 local tileH = 32
 
 function drawMap()
-   local offsetX = mapX % tileW
-   local offsetY = mapY % tileH
    local firstTileX = math.floor(mapX / tileW)
    local firstTileY = math.floor(mapY / tileH)
+   --print("offsetX: "..offsetX.." offsetY: "..offsetY) --debugging
    
-   for y=1, (mapDisplayHeight + numberOfBufferedTiles) do
-      for x=1, (mapDisplayWidth + numberOfBufferedTiles) do
-         -- Note that this condition block allows us to go beyond the edge of the map.
+   local mapMaxYView = mapDisplayHeight + numberOfBufferedTiles
+   local mapMaxXView = mapDisplayWidth + numberOfBufferedTiles
+   for y=1, mapMaxYView do
+      for x=1, mapMaxXView do
          if y+firstTileY >= 1 and y+firstTileY <= mapH
             and x+firstTileX >= 1 and x+firstTileX <= mapW
          then
+            local tileInView = tiles[map[y+firstTileY][x+firstTileX]]
+            local tileInView_X = ((firstTileX+x-1)*tileW)
+            local tileInView_Y = ((firstTileY+y-1)*tileH)
             love.graphics.draw(
-               tiles[map[y+firstTileY][x+firstTileX]], 
-               ((firstTileX+x-1)*tileW) - offsetX - tileW/2, 
-               ((firstTileY+y-1)*tileH) - offsetY - tileH/2)
+               tileInView,
+               tileInView_X,
+               tileInView_Y)
          end
       end
    end
 end
 
 function updateMap()
-	mapX = (camera.x - camera.w/2)/camera.scale
-	mapY = (camera.y - camera.h/2)/camera.scale
+   local function cameraTopLeftPosition()  return camera.x - (camera.w/2)/camera.scale, camera.y - (camera.h/2)/camera.scale end
+	mapX, mapY = cameraTopLeftPosition()
    mapDisplayWidth = math.ceil(camera.w/camera.scale)/tileW
    mapDisplayHeight = math.ceil(camera.h/camera.scale)/tileH
-   print("Mapax: " .. mapX .. " Mapay: " ..mapY)
+   --print("Mapax: " .. mapX .. " Mapay: " ..mapY) debugging
 end
