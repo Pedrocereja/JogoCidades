@@ -5,7 +5,7 @@ Uma explicação mais detalhada pode ser encontrada direto em sua [fonte de insp
 
 TODO:
 - [ ] Sistema de mapa
-    - [ ] Adequar renderização do mapa ao viewport da camera
+    - [X] Adequar renderização do mapa ao viewport da camera
     - [ ] Escalonar o mapa à janela
     - [ ] Integrar tiles e recursos
 - [ ] Fazer as cidades coletarem os recursos
