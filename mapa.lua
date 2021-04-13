@@ -50,11 +50,10 @@ local mapW = #map[1]
 local mapH = #map
 local mapX = 0
 local mapY = 0
-
-local numberOfBufferedTiles = 4
 local mapDisplayWidth = 25
 local mapDisplayHeight = 19
 
+local numberOfBufferedTiles = 4
 local tileW = 32
 local tileH = 32
 
@@ -63,17 +62,16 @@ function drawMap()
    local firstTileY = math.floor(mapY / tileH)
    local mapMaxYView = mapDisplayHeight + numberOfBufferedTiles
    local mapMaxXView = mapDisplayWidth + numberOfBufferedTiles
-
    for y=1, mapMaxYView do
       for x=1, mapMaxXView do
          if y+firstTileY >= 1 and y+firstTileY <= mapH
             and x+firstTileX >= 1 and x+firstTileX <= mapW
          then
-            local tileInView = tiles[map[y+firstTileY][x+firstTileX]]
-            local tileInView_X = ((firstTileX+x-1)*tileW)
-            local tileInView_Y = ((firstTileY+y-1)*tileH)
+            local tileInView_Index = tiles[ map[y + firstTileY][x + firstTileX] ]
+            local tileInView_X = ( (firstTileX + x - 1) * tileW)
+            local tileInView_Y = ( (firstTileY + y - 1) * tileH)
             love.graphics.draw(
-               tileInView,
+               tileInView_Index,
                tileInView_X,
                tileInView_Y)
          end
@@ -81,7 +79,7 @@ function drawMap()
    end
 end
 
-function updateMap()
+function updateMapToCameraPosition()
    local function cameraTopLeftPosition()  return camera.x - (camera.w/2)/camera.scale, camera.y - (camera.h/2)/camera.scale end
 	mapX, mapY = cameraTopLeftPosition()
    mapDisplayWidth = math.ceil(camera.w/camera.scale)/tileW

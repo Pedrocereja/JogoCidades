@@ -30,7 +30,7 @@ function Dijkstra:new(origem)
 	self.unvisited = {}
 end
 
-function Dijkstra:update(nodos, arestas)
+function Dijkstra:updateNodoseArestas(nodos, arestas)
 	self.nodos = nodos
 	self.arestas = arestas
 end

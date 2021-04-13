@@ -34,9 +34,8 @@ end
 function love.update(dt)
 	camera:update(dt)
 	mundo:update(dt)
-	dijkstra:update(mundo.tortas, mundo.caminhos)
-	updateMap()
-	--print(camera.x, camera.y, camera.w, camera.h, camera.scale) debugging
+	dijkstra:updateNodoseArestas(mundo.tortas, mundo.caminhos)
+	updateMapToCameraPosition()
 end
 
 function love.draw()
