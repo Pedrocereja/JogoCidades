@@ -85,3 +85,10 @@ function updateMapToCameraPosition()
    mapDisplayWidth = math.ceil(camera.w/camera.scale)/tileW
    mapDisplayHeight = math.ceil(camera.h/camera.scale)/tileH
 end
+
+function toMapCoordinates(x, y)
+   local tileX, tileY = math.floor(x/tileW) + 1, math.floor(y/tileH) + 1
+   if (tileX > mapW) or (tileY > mapH) then
+      return nil, nil
+   end
+return tileX, tileY end
