@@ -1,13 +1,13 @@
-local tiles = {}
-
-local tileSet = love.graphics.newImage( "images/cartographypack/Spritesheet/spritesheet_default.png" )
+local tileset = love.graphics.newImage( "images/cartographypack/Spritesheet/spritesheet_default.png" )
+local bgImage = love.graphics.newImage( "images/cartographypack/Textures/parchmentAncient.png" )
+local tilesetW, tilesetH = tileset:getWidth(), tileset:getHeight()
 local tileW, tileH = 64,64
-local tilesetW, tilesetH = tileSet:getWidth(), tileSet:getHeight()
 
-tiles[0] = love.graphics.newQuad(192,  320, tileW, tileH, tilesetW, tilesetH)
-tiles[1] = love.graphics.newQuad(384,  128, tileW, tileH, tilesetW, tilesetH)
-tiles[2] = love.graphics.newQuad(0,  576, tileW, tileH, tilesetW, tilesetH)
-tiles[3] = love.graphics.newQuad(128,  640, tileW, tileH, tilesetW, tilesetH)
+local tiles = {}
+tiles[0] = love.graphics.newQuad(192,  320, tileW, tileH, tilesetW, tilesetH) --montanha
+tiles[1] = love.graphics.newQuad(384,  128, tileW, tileH, tilesetW, tilesetH) --terra
+tiles[2] = love.graphics.newQuad(0,  576, tileW, tileH, tilesetW, tilesetH)  --arvore
+tiles[3] = love.graphics.newQuad(128,  640, tileW, tileH, tilesetW, tilesetH)  --agua
 
 local map={
    { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 2, 2, 2, 0, 0, 3, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0},
@@ -61,7 +61,16 @@ local mapDisplayHeight = 19
 
 local numberOfBufferedTiles = 4
 
+function drawBG()
+   love.graphics.draw(
+              bgImage,
+              0,
+              0)
+end
+
 function drawMap()
+   drawBG()
+
    local firstTileX = math.floor(mapX / tileW)
    local firstTileY = math.floor(mapY / tileH)
    local mapMaxYView = mapDisplayHeight + numberOfBufferedTiles
@@ -75,7 +84,7 @@ function drawMap()
             local tileInView_X = ( (firstTileX + x - 1) * tileW)
             local tileInView_Y = ( (firstTileY + y - 1) * tileH)
             love.graphics.draw(
-               tileSet,
+               tileset,
                tileInView_Index,
                tileInView_X,
                tileInView_Y)

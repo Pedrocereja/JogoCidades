@@ -1,6 +1,4 @@
 function love.load()
-	love.graphics.setDefaultFilter("nearest", "nearest") --não interpola os desenhos, evitando blurry na pixel art
-
     Object = require "libs.classic"
     require "classes.Populacao"
     require "classes.Torta"
@@ -10,7 +8,6 @@ function love.load()
 	local Camera = require "handlers.Camera"
 	require "handlers.Dijkstra"
 	require "mapa"
-    require "map"
 
 	camera = Camera()
     camera:setFollowLerp(0.2)
@@ -42,7 +39,6 @@ end
 function love.draw()
 	camera:attach()
 
-	drawBG()
 	drawMap()
 	mundo:draw()
 
