@@ -1,7 +1,13 @@
 local tiles = {}
-for i=0,3 do
-   tiles[i] = love.graphics.newImage( "images/tile"..i..".png" )
-end
+
+local tileSet = love.graphics.newImage( "images/cartographypack/Spritesheet/spritesheet_default.png" )
+local tileW, tileH = 64,64
+local tilesetW, tilesetH = tileSet:getWidth(), tileSet:getHeight()
+
+tiles[0] = love.graphics.newQuad(192,  320, tileW, tileH, tilesetW, tilesetH)
+tiles[1] = love.graphics.newQuad(384,  128, tileW, tileH, tilesetW, tilesetH)
+tiles[2] = love.graphics.newQuad(0,  576, tileW, tileH, tilesetW, tilesetH)
+tiles[3] = love.graphics.newQuad(128,  640, tileW, tileH, tilesetW, tilesetH)
 
 local map={
    { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 2, 2, 2, 0, 0, 3, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0},
@@ -54,8 +60,6 @@ local mapDisplayWidth = 25
 local mapDisplayHeight = 19
 
 local numberOfBufferedTiles = 4
-local tileW = 32
-local tileH = 32
 
 function drawMap()
    local firstTileX = math.floor(mapX / tileW)
@@ -71,6 +75,7 @@ function drawMap()
             local tileInView_X = ( (firstTileX + x - 1) * tileW)
             local tileInView_Y = ( (firstTileY + y - 1) * tileH)
             love.graphics.draw(
+               tileSet,
                tileInView_Index,
                tileInView_X,
                tileInView_Y)

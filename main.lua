@@ -9,7 +9,8 @@ function love.load()
 	require "handlers.collisionHandler"
 	local Camera = require "handlers.Camera"
 	require "handlers.Dijkstra"
-    require "mapa"
+	require "mapa"
+    require "map"
 
 	camera = Camera()
     camera:setFollowLerp(0.2)
@@ -41,6 +42,7 @@ end
 function love.draw()
 	camera:attach()
 
+	drawBG()
 	drawMap()
 	mundo:draw()
 
