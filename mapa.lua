@@ -1,3 +1,5 @@
+require "resources"
+
 local bgImage = love.graphics.newImage( "images/cartographypack/Textures/parchmentAncient.png" )
 local tileW, tileH = 64,64
 
@@ -13,7 +15,8 @@ local function drawBG()
 end
 
 local function drawResources()
-   --to do
+   --temporary map for testing purposes
+
 end
 
 local function drawStructures()

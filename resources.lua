@@ -5,10 +5,10 @@ local tileW, tileH = 64,64
 Recurso = Object:extend()
 
 function Recurso:new(quad, x, y)
-    local x, y = x, y
-    local quad
-    local state = "Full" --"Full", "Depleted"
-    local quantity = math.random(50, 200)
+    self.x, self.y = x, y
+    self.quad = quad
+    self.state = "Full" --"Full", "Depleted"
+    self.quantity = math.random(50, 200)
 end
 
 function Recurso:draw()

@@ -1,11 +1,11 @@
---Essa biblioteca mantém registro dos objetos existentes no mundo,
+--Essa biblioteca mantém registro dos objetos existentes no cenário,
 --desenhando-os e movendo-os como necessário.
 
 Mundo = Object:extend()
 
 function Mundo:new()
 	self.updates = {}
-	self.desenhos = {}
+	self.draws = {}
 	self.tortas = {}
 	self.caminhos = {}
 end
@@ -14,24 +14,24 @@ function Mundo:inserir(Obj, layer)
 	--Cria o objeto no mundo do jogo, em uma das seguintes layers: "torta", "pessoa" "UI"
 	if (layer=="torta") then
 	    table.insert(mundo.tortas, Obj)
-	    table.insert(self.desenhos, Obj)
+	    table.insert(self.draws, Obj)
 		Obj.itortas = #mundo.tortas --as 'i-variaveis' mantém no objeto o registro de sua posição nas tabelas do mundo
-		Obj.idraws = #self.desenhos
+		Obj.idraws = #self.draws
 	elseif (layer=="UI") then
 		table.insert(self.updates, Obj)
-	    table.insert(self.desenhos, Obj)
+	    table.insert(self.draws, Obj)
 		Obj.iupdates = #self.updates
-		Obj.idraws = #self.desenhos
+		Obj.idraws = #self.draws
 	elseif (layer=="noFis") then
 		table.insert(self.updates, Obj)
-	    table.insert(self.desenhos, Obj)
+	    table.insert(self.draws, Obj)
 		Obj.iupdates = #self.updates
-		Obj.idraws = #self.desenhos
+		Obj.idraws = #self.draws
 	elseif (layer=="caminho") then
 		table.insert(self.caminhos, Obj)
-	    table.insert(self.desenhos, Obj)
+	    table.insert(self.draws, Obj)
 		Obj.icaminhos = #self.updates
-		Obj.idraws = #self.desenhos
+		Obj.idraws = #self.draws
 	else print("Erro na função insMundo: layer não existente")
 	end
 end
@@ -46,9 +46,9 @@ function Mundo:remove(Obj)
 		Obj.iupdates = nil --limpa variável para o GC
 	end
 	if (Obj.idraws~=nil) then
-		table.remove(self.desenhos, Obj.idraws)
-		for i=Obj.idraws,#self.desenhos do
-			self.desenhos[i].idraws=self.desenhos[i].idraws-1
+		table.remove(self.draws, Obj.idraws)
+		for i=Obj.idraws,#self.draws do
+			self.draws[i].idraws=self.draws[i].idraws-1
 		end
 		Obj.iupdates = nil
 	end
@@ -69,7 +69,7 @@ function Mundo:remove(Obj)
 end
 
 function Mundo:draw()
-	for i,v in ipairs(self.desenhos) do
+	for i,v in ipairs(self.draws) do
         v:draw()
     end
 end
