@@ -5,7 +5,15 @@ Mundo = Object:extend()
 
 function Mundo:new()
 	self.updates = {}
+
+	self.bg = {}
+	self.map = {}
+	self.caminhos = {}
+	self.pessoas = {}
+	self.builds = {}
+	self.UI = {}
 	self.draws = {}
+
 	self.tortas = {}
 	self.caminhos = {}
 end
@@ -90,3 +98,55 @@ function Mundo:tortaCollision(x, y, r)
     		return self.tortas[i] end
         end
 return false end
+
+------------------------------------------------
+require "colissionHandler"
+require "renderer"
+require "miningHandler"
+
+Scene = Object:extend()
+
+function Scene:new()
+	self.background = {} --bgImage(sempre na posição 1), recursos, caminhos
+	self.middleground = {} --construcoes, pessoas
+	self.foreground = {} --UI
+	self.draws = {self.background, self.middleground, self.foreground}
+
+	self.update = {}
+end
+
+function Scene:setBackground(imagePath)
+	local bgImage = love.graphics.newImage(imagePath)
+	self.background[bg] = bgImage
+end
+
+function Scene:newBuilding(type, x, y)
+	
+end
+
+function Scene:newPerson(x, y)
+	
+end
+
+function Scene:newPath()
+	
+end
+
+function Scene:newResource(type, x, y)
+	
+end
+
+function Scene:update(dt)
+	for key, object in pairs(self.update) do
+		object.update()
+	end
+end
+
+function Scene:draw()
+	love.graphics.draw(self.background[bg], 0, 0)
+	for k, layer in pairs(self.draws) do
+		for i, object in pairs(layer) do
+			object.draw()
+		end
+	end
+end
