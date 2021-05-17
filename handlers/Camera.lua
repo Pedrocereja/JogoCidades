@@ -145,9 +145,9 @@ function Camera:shake(intensity, duration, frequency, axes)
 end
 
 function Camera:update(dt)
-    self.mx, self.my = self:toWorldCoords(love.mouse.getPosition())
-    self.target_x= self.target_x+(booleanToNumber(love.keyboard.isDown("right", 'd'))-booleanToNumber(love.keyboard.isDown("left", 'a')))*self.speed*dt
-    self.target_y= self.target_y+(booleanToNumber(love.keyboard.isDown("down", 's'))-booleanToNumber(love.keyboard.isDown("up", 'w')))*self.speed*dt
+    --self.mx, self.my = self:toWorldCoords(love.mouse.getPosition())
+    --self.target_x= self.target_x+(booleanToNumber(love.keyboard.isDown("right", 'd'))-booleanToNumber(love.keyboard.isDown("left", 'a')))*self.speed*dt
+    --self.target_y= self.target_y+(booleanToNumber(love.keyboard.isDown("down", 's'))-booleanToNumber(love.keyboard.isDown("up", 'w')))*self.speed*dt
 
     -- Flash --
     if self.flashing then

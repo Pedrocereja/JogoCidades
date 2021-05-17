@@ -1,6 +1,6 @@
 Torta = Object:extend()
 
-function Torta:new(x, y, r)
+function Torta:new(r, x, y)
     self.x = x
     self.y = y
 	self.r = r or 50

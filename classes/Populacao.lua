@@ -14,15 +14,15 @@ function Populacao:draw()
 	love.graphics.draw(self.image, self.x, self.y)
 end
 
-function Populacao:update()
+--function Populacao:update()
 	--Entra na cidade-casa quando colidir com ela
-	local cidadeColidida = mundo:tortaCollision(self.x, self.y, self.r)
-	if cidadeColidida==self.home then
-		table.insert(cidadeColidida.populacao, self)
-		mundo:remove(self)
-	else self:moveto(self.home) --se não estiver na cidade-casa, vai para ela
-	end
-end
+--	local cidadeColidida = mundo:tortaCollision(self.x, self.y, self.r)
+--	if cidadeColidida==self.home then
+--		table.insert(cidadeColidida.populacao, self)
+--		mundo:remove(self)
+--	else self:moveto(self.home) --se não estiver na cidade-casa, vai para ela
+--	end
+--end
 
 function Populacao:moveto(destino, dt)
 	local dx = destino.x-self.x
