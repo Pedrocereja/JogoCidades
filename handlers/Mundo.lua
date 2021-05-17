@@ -117,12 +117,20 @@ end
 
 function Scene:setBackground(imagePath)
 	local bgImage = love.graphics.newImage(imagePath)
-	self.background[bg] = bgImage
+	self.background["bg"] = bgImage
 end
 
 function Scene:newBuilding(type, x, y)
-	
-end
+	local building
+	for key, value in pairs(buildingTypes) do
+		if type == value then
+			building = value(x, y)
+			break
+		end
+	end
+	table.insert(self.middleground, building)
+	building.position["middleground"] = #self.middleground
+return building end
 
 function Scene:newPerson(x, y)
 	
@@ -143,7 +151,7 @@ function Scene:update(dt)
 end
 
 function Scene:draw()
-	love.graphics.draw(self.background[bg], 0, 0)
+	love.graphics.draw(self.background["bg"], 0, 0)
 	for k, layer in pairs(self.draws) do
 		for i, object in pairs(layer) do
 			object.draw()
