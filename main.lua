@@ -1,7 +1,6 @@
 function love.load()
     Object = require "libs.classic"
     require "Scene"
-	require "handlers.collisionHandler"
 	local Camera = require "handlers.Camera"
 	--require "handlers.Dijkstra"
 
