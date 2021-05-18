@@ -1,4 +1,6 @@
 require "classes.Torta"
+require "classes.Populacao"
+require "classes.Caminho"
 --TODO scripts:
 --require "colissionHandler"
 --require "renderer"
@@ -27,16 +29,49 @@ function Scene:newBuilding(r, x, y)
 	building.position["middleground"] = #self.middleground
 return building end
 
-function Scene:newPerson(x, y)
-	
-end
+function Scene:newPerson(home)
+	local person = Populacao(home)
+	table.insert(self.middleground, person)
+	table.insert(self.updatable, person)
+	person.position = {}
+	person.position["middleground"] = #self.middleground
+	person.position["updatable"] = #self.updatable
+return person end
 
-function Scene:newPath()
-	
-end
+function Scene:newPath(origin, destination)
+	local path = Caminho(origin, destination)
+	table.insert(self.background, path)
+	path.position = {}
+	path.position["background"] = #self.background
+return path end
 
 function Scene:newResource(type, x, y)
 	
+end
+
+local function updateItensIndexing(table, tableName, position)
+	for i = position, #table do
+		table[i].position[tableName] = table[i].position[tableName] - 1
+	end
+end
+
+function Scene:remove(obj)
+	if obj.position["background"] ~= nil then
+		position = table.remove(self.background, obj.position["background"])
+		updateItensIndexing(self.background, "background", position)
+	end
+	if obj.position["middleground"] ~= nil then
+		position = table.remove(self.middleground, obj.position["middleground"])
+		updateItensIndexing(self.middleground, "middleground", position)
+	end
+	if obj.position["foreground"] ~= nil then
+		position = table.remove(self.foreground, obj.position["foreground"])
+		updateItensIndexing(self.foreground, "foreground", position)
+	end
+	if obj.position["updatable"] ~= nil then
+		position = table.remove(self.updatable, obj.position["updatable"])
+		updateItensIndexing(self.updatable, "updatable", position)
+	end
 end
 
 function Scene:update(dt)

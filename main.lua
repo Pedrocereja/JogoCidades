@@ -29,8 +29,8 @@ function love.draw()
     camera:detach()
 end
 
---function love.mousepressed(x, y, button)
---end
+function love.mousepressed(x, y, button)
+end
 
 function love.wheelmoved(x, y)
 	camera.scale = camera.scale + y*.1
