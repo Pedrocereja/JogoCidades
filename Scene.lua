@@ -51,17 +51,20 @@ end
 
 function Scene:newBuilding(r, x, y)
 	local building = Torta(r, x, y)
+	self.grid:insertItem(building)
 	insertOnDraws(self, building, "middleground")
 return building end
 
 function Scene:newPerson(home)
 	local person = Populacao(home)
+	self.grid.insertItem(person)
 	insertOnDraws(self, person, "middleground")
 	insertOnUpdatable(self, person)
 return person end
 
 function Scene:newPath(origin, destination)
 	local path = Caminho(origin, destination)
+	self.grid.insertItem(path)
 	insertOnDraws(self, path, "background")
 return path end
 

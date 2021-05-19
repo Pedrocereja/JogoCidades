@@ -7,9 +7,9 @@ local function initializeSegmentation()
     local numberOfXPartitions = numberOfPartitions  --numero arbitrário
     local numberOfYPartitions = numberOfPartitions
     for i = 1, numberOfXPartitions do
+        local colum = {}
+        partitions[i] = colum
         for j = 1, numberOfYPartitions do
-            local colum = {}
-            partitions[i] = colum
             local space = {}
             partitions[i][j] = space
         end
@@ -37,8 +37,13 @@ function Grid:insertItem(item)
         print("Item does not have all the necessary properties for entering the grid: 'x, y, r' or 'x, y, w, h'")
         return
     end
-    local X, Y = getLocationPartition(self, item.x, item.y)
+    local locationPartition = getLocationPartition(self, item.x, item.y)
+    local X, Y = locationPartition[1], locationPartition[2]
     table.insert(self.partitions[X][Y], item)
+end
+
+function Grid:updateItem(item, xo, yo, xf, yf)
+    
 end
 
 function Grid:removeItem(item)
