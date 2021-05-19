@@ -111,3 +111,7 @@ function Scene:draw()
 		end
 	end
 end
+
+function Scene:whatDidIClick(x, y)
+	local item = self.grid:getItemOnPosition(x, y)
+return item end

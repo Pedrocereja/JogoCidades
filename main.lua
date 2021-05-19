@@ -11,7 +11,7 @@ function love.load()
 	onMouse = {} --objeto seguindo o mouse
 
 	scene:setBackgroundAndGridSize("images/cartographypack/Textures/parchmentBasic.png")
-	scene:newBuilding(50, 200, 200)
+	scene:newBuilding(20, 50, 50)
 end
 
 function love.update(dt)
@@ -29,6 +29,9 @@ function love.draw()
 end
 
 function love.mousepressed(x, y, button)
+	x, y = camera:toWorldCoords(x, y)
+	local item = scene:whatDidIClick(x, y)
+	print(item)
 end
 
 function love.wheelmoved(x, y)

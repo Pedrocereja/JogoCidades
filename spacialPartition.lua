@@ -28,17 +28,16 @@ local function havePositionAndArea(item)
 return havePosition and haveArea end
 
 local function getLocationPartition(self, x, y)
-    local partitionX = math.floor(x / self.partitionW)
-    local partitionY = math.floor(y / self.partitionH)
-return {partitionX, partitionY} end
+    local partitionX = 1 + math.floor(x / self.partitionW)
+    local partitionY = 1 + math.floor(y / self.partitionH)
+return partitionX, partitionY end
 
 function Grid:insertItem(item)
     if not havePositionAndArea(item) then
         print("Item does not have all the necessary properties for entering the grid: 'x, y, r' or 'x, y, w, h'")
         return
     end
-    local locationPartition = getLocationPartition(self, item.x, item.y)
-    local X, Y = locationPartition[1], locationPartition[2]
+    local X, Y = getLocationPartition(self, item.x, item.y)
     table.insert(self.partitions[X][Y], item)
 end
 
