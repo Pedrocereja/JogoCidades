@@ -23,9 +23,4 @@ function Torta:draw()
 end
 
 function Torta:showInfo(x, y)
-	local torta = Torta(x, y, 1)
-	if CheckCollision(self, torta) and self.mostrador==nil then
-		--self.mostrador = "Não há recursos"
-		--print("Não há recursos")
-	end
 end

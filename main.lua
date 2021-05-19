@@ -10,7 +10,7 @@ function love.load()
 	scene = Scene()
 	onMouse = {} --objeto seguindo o mouse
 
-	scene:setBackground("images/cartographypack/Textures/parchmentBasic.png")
+	scene:setBackgroundAndGridSize("images/cartographypack/Textures/parchmentBasic.png")
 	scene:newBuilding(50, 200, 200)
 end
 

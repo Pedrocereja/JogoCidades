@@ -1,6 +1,7 @@
 require "classes.Torta"
 require "classes.Populacao"
 require "classes.Caminho"
+require "spacialPartition"
 --TODO scripts:
 --require "colissionHandler"
 --require "renderer"
@@ -17,32 +18,51 @@ function Scene:new()
 	self.updatable = {}
 end
 
-function Scene:setBackground(imagePath)
+function Scene:setBackgroundAndGridSize(imagePath)
 	local bgImage = love.graphics.newImage(imagePath)
 	self.background["bg"] = bgImage
+
+	self.grid = Grid(bgImage:getHeight(), bgImage:getWidth()) --TODO deixar grid independendte do BG
+end
+
+local function insertOnDraws(self, obj, layer)
+	if obj.position == nil then
+		obj.position = {}
+	end
+	if layer == "background" then
+		table.insert(self.background, obj)
+		obj.position["background"] = #self.background
+	elseif layer == "middleground" then
+		table.insert(self.middleground, obj)
+		obj.position["middleground"] = #self.middleground
+	elseif layer == "foreground" then
+		table.insert(self.foreground, obj)
+		obj.position["foreground"] = #self.foreground
+	end
+end
+
+local function insertOnUpdatable(self, obj)
+	if obj.position == nil then
+		obj.position = {}
+	end
+	table.insert(self.updatable, obj)
+	obj.position["updatable"] = #self.updatable
 end
 
 function Scene:newBuilding(r, x, y)
 	local building = Torta(r, x, y)
-	table.insert(self.middleground, building)
-	building.position = {}
-	building.position["middleground"] = #self.middleground
+	insertOnDraws(self, building, "middleground")
 return building end
 
 function Scene:newPerson(home)
 	local person = Populacao(home)
-	table.insert(self.middleground, person)
-	table.insert(self.updatable, person)
-	person.position = {}
-	person.position["middleground"] = #self.middleground
-	person.position["updatable"] = #self.updatable
+	insertOnDraws(self, person, "middleground")
+	insertOnUpdatable(self, person)
 return person end
 
 function Scene:newPath(origin, destination)
 	local path = Caminho(origin, destination)
-	table.insert(self.background, path)
-	path.position = {}
-	path.position["background"] = #self.background
+	insertOnDraws(self, path, "background")
 return path end
 
 function Scene:newResource(type, x, y)
