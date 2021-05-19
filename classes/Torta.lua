@@ -1,12 +1,14 @@
 Torta = Object:extend()
 
-function Torta:new(r, x, y)
+function Torta:new(x, y)
     self.x = x
     self.y = y
-	self.r = r or 50
+	self.w = 128
+	self.h = 64
 	self.xorigin = x
 	self.yorigin = y
 	self.populacao = {}
+	self.image = tile["castle"]
 end
 
 function Torta:update(dt)
@@ -14,11 +16,17 @@ function Torta:update(dt)
 end
 
 function Torta:draw()
-    love.graphics.circle("fill", self.x, self.y, self.r)
+    love.graphics.draw(tileset, self.image, self.x, self.y)
 
 	--desenho dos habitantes no canto inferior esquerdo da cidade
 	for i,habitante in ipairs(self.populacao) do
-		love.graphics.draw(habitante.image, self.x-self.r+habitante.r+15*(i-1), self.y+self.r-habitante.r)
+		love.graphics.draw(habitante.image, self.x+habitante.r+15*(i-1), self.y+self.h-habitante.r)
+	end
+
+	if debugMode then
+		love.graphics.setColor(255,0,0)
+		love.graphics.rectangle("line", self.x, self.y, self.w, self.h)
+		love.graphics.setColor(255,255,255)
 	end
 end
 

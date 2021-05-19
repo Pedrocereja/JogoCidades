@@ -56,18 +56,34 @@ function Grid:removeItem(item)
     print("Item not found")
 end
 
-local function positionsCollide(x1, y1, x2, y2, r2)
-	return x1 > x2-r2 and
-	    x1 < x2+r2 and
-        y1 > y2-r2 and
-        y1 < y2+r2
+local function positionsCollide(x1, y1, x2, y2, w2, h2)
+	return x1 > x2 and
+	    x1 < x2+w2 and
+        y1 > y2 and
+        y1 < y2+h2
 end
 
 function Grid:getItemOnPosition(x, y)
     local X, Y = getLocationPartition(self, x, y)
+
+    if self.partitions[X] == nil then
+        print("Out of range")
+        return
+    elseif self.partitions[X][Y] == nil then
+        print("Out of range")
+        return
+    end
+
     for i, storedItem in ipairs(self.partitions[X][Y]) do
-        if positionsCollide(x, y, storedItem.x, storedItem.y, storedItem.r) then
+        if positionsCollide(x, y, storedItem.x, storedItem.y, storedItem.w, storedItem.h) then
             return storedItem
         end
+    end
+end
+
+function Grid:drawGrid()
+    for i = 1, numberOfPartitions do
+        love.graphics.line(i*self.partitionW, 0, i*self.partitionW, self.partitionH*numberOfPartitions)
+        love.graphics.line(0, i*self.partitionH, self.partitionW*numberOfPartitions, i*self.partitionH)
     end
 end

@@ -49,8 +49,8 @@ local function insertOnUpdatable(self, obj)
 	obj.position["updatable"] = #self.updatable
 end
 
-function Scene:newBuilding(r, x, y)
-	local building = Torta(r, x, y)
+function Scene:newBuilding(x, y)
+	local building = Torta(x, y)
 	self.grid:insertItem(building)
 	insertOnDraws(self, building, "middleground")
 return building end
@@ -109,6 +109,9 @@ function Scene:draw()
 		for i, object in ipairs(layer) do
 			object:draw()
 		end
+	end
+	if debugMode then
+		self.grid:drawGrid()
 	end
 end
 
