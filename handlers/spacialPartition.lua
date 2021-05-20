@@ -25,12 +25,12 @@ end
 local function isInGridRange(self, X, Y)
     if self.partitions[X] == nil then
         print("Out of range")
-        return
+        return false
     elseif self.partitions[X][Y] == nil then
         print("Out of range")
-        return
+        return false
     end
-end
+return true end
 
 local function havePositionAndArea(item)
     local havePosition = (item.x ~= nil) and (item.y ~= nil)
