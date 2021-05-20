@@ -1,7 +1,7 @@
 require "classes.Torta"
 require "classes.Populacao"
 require "classes.Caminho"
-require "spacialPartition"
+require "handlers.spacialPartition"
 --TODO scripts:
 --require "colissionHandler"
 --require "renderer"

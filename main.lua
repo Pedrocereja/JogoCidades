@@ -1,7 +1,7 @@
 function love.load()
     Object = require "libs.classic"
-    require "Scene"
-	require "quads"
+    require "handlers.Scene"
+	require "images.quads"
 	--require "handlers.Dijkstra"
 	local Camera = require "handlers.Camera"
 	local tileset = love.graphics.newImage( "images/cartographypack/Spritesheet/spritesheet_default.png" )
