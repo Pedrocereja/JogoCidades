@@ -3,7 +3,6 @@ require "classes.Populacao"
 require "classes.Caminho"
 require "handlers.spacialPartition"
 --TODO scripts:
---require "colissionHandler"
 --require "renderer"
 --require "miningHandler"
 

@@ -22,6 +22,16 @@ function Grid:new(height, width)
     self.partitionH = height/numberOfPartitions
 end
 
+local function isInGridRange(self, X, Y)
+    if self.partitions[X] == nil then
+        print("Out of range")
+        return
+    elseif self.partitions[X][Y] == nil then
+        print("Out of range")
+        return
+    end
+end
+
 local function havePositionAndArea(item)
     local havePosition = (item.x ~= nil) and (item.y ~= nil)
     local haveArea = (item.r ~= nil) or ((item.w ~= nil) and (item.h ~= nil))
@@ -30,6 +40,10 @@ return havePosition and haveArea end
 local function getLocationPartition(self, x, y)
     local partitionX = 1 + math.floor(x / self.partitionW)
     local partitionY = 1 + math.floor(y / self.partitionH)
+    if not isInGridRange(self, partitionX, partitionY) then
+        print("Location is not in grid range")
+        return
+    end
 return partitionX, partitionY end
 
 function Grid:insertItem(item)
@@ -65,15 +79,6 @@ end
 
 function Grid:getItemOnPosition(x, y)
     local X, Y = getLocationPartition(self, x, y)
-
-    if self.partitions[X] == nil then
-        print("Out of range")
-        return
-    elseif self.partitions[X][Y] == nil then
-        print("Out of range")
-        return
-    end
-
     for i, storedItem in ipairs(self.partitions[X][Y]) do
         if positionsCollide(x, y, storedItem.x, storedItem.y, storedItem.w, storedItem.h) then
             return storedItem
